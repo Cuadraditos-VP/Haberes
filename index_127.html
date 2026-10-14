@@ -1,0 +1,2618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haberes · Nominal vs Ajustado</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#f4f1ec">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    /* Tema Suave (por defecto) — crema cálido, lavanda apagado y verde salvia */
+    :root, [data-theme="suave"] {
+      --bg: #f4f1ec;
+      --surface: #fbfaf7;
+      --surface-2: #efebe4;
+      --border: #ddd6cb;
+      --header-bg: #e7e1f0;
+      --header-text: #4a4360;
+      --row-bg: #fdfcfa;
+      --row-alt: #f6f3ee;
+      --row-hover: #efeaf5;
+      --row-border: #ebe5dc;
+      --row-head: #5a5170;
+      --text: #3d3a45;
+      --accent: #6f5fa3;
+      --accent-hover: #5f4f93;
+      --btn-bg: #5c566b;
+      --btn-hover: #4c4659;
+      --btn-fg: #ffffff;
+      --accent-soft: #c3b8de;
+      --on-accent: #ffffff;
+      --total-nom: #7a6aa8;
+      --positive: #6fa898;
+      --input-bg: #ffffff;
+      --input-fg: #3d3a45;
+      --edit-bg: #fffaf0;
+      --body-fg: #4a4655;
+      --muted: #8a8494;
+      --heading: #5a5170;
+      --title: #3d3a45;
+      --chart-line: 154, 139, 196;
+      --chart-line-2: 111, 168, 152;
+      --save-bg: #3f7a6c;
+      --danger: #a85a5a;
+      --aj-bg: #eaf4f1;
+      --aj-text: #4f8a7c;
+      --aj-head-bg: #d5ebe5;
+      --aj-head-text: #3b6a5f;
+      --chart-area-bg: #fbfaf7;
+      --grid: rgba(90, 80, 110, 0.08);
+      --diff-pos-bg: #dcefe9;
+      --diff-neg-bg: #f5e1e1;
+      --diff-fg: #3d3a45;
+      --kpi-bg: #ebe6f4;
+      --tag-agui-bg: #fbe6d8;
+      --tag-agui-fg: #b5764f;
+      --dot-agui: #e3a77f;
+      --shadow: rgba(60, 50, 40, 0.06);
+    }
+    /* Tema Violeta (oscuro, suavizado) */
+    [data-theme="violeta"] {
+      --bg: #1d1a24;
+      --surface: #26222f;
+      --surface-2: #2f2a3a;
+      --border: #423a52;
+      --header-bg: #cfc3e3;
+      --header-text: #2e2645;
+      --row-bg: #efebf4;
+      --row-alt: #e7e2ef;
+      --row-hover: #ddd6ea;
+      --row-border: #d6cee3;
+      --row-head: #43385c;
+      --text: #242030;
+      --accent: #7a64b4;
+      --accent-hover: #8a75c2;
+      --btn-bg: #4a4060;
+      --btn-hover: #574c70;
+      --btn-fg: #f3effa;
+      --accent-soft: #b5a7d6;
+      --on-accent: #ffffff;
+      --total-nom: #6a5895;
+      --positive: #5fae9f;
+      --input-bg: #2b2636;
+      --input-fg: #ece6f4;
+      --edit-bg: #fff8e7;
+      --body-fg: #e3dcec;
+      --muted: #a69cba;
+      --heading: #d2c8e6;
+      --title: #f3effa;
+      --chart-line: 142, 123, 191;
+      --chart-line-2: 95, 174, 159;
+      --save-bg: #3f7d72;
+      --danger: #9a4a4a;
+      --aj-bg: #e0f0ec;
+      --aj-text: #2f6d61;
+      --aj-head-bg: #b9ddd5;
+      --aj-head-text: #1f3f39;
+      --chart-area-bg: #221e2b;
+      --grid: rgba(200, 190, 220, 0.09);
+      --diff-pos-bg: #2f6b64;
+      --diff-neg-bg: #7a4040;
+      --diff-fg: #eef3f2;
+      --kpi-bg: #46397a;
+      --tag-agui-bg: #f6dccb;
+      --tag-agui-fg: #a5603a;
+      --dot-agui: #e39a70;
+      --shadow: rgba(0, 0, 0, 0.25);
+    }
+    /* Tema Océano (oscuro) — azul pizarra + coral */
+    [data-theme="oceano"] {
+      --bg: #0f1b2c;
+      --surface: #16263b;
+      --surface-2: #1d314b;
+      --border: #2d4868;
+      --header-bg: #f5cdb2;
+      --header-text: #3d1f0a;
+      --row-bg: #f1f6fa;
+      --row-alt: #e6eff6;
+      --row-hover: #d8e7f2;
+      --row-border: #d3e1ec;
+      --row-head: #1d3a55;
+      --text: #12202e;
+      --accent: #c4703f;
+      --accent-hover: #d2814f;
+      --btn-bg: #2c4a6e;
+      --btn-hover: #365780;
+      --btn-fg: #eef5fb;
+      --accent-soft: #eeb08e;
+      --on-accent: #ffffff;
+      --total-nom: #2a7c96;
+      --positive: #45b0a3;
+      --input-bg: #13233a;
+      --input-fg: #e4eef8;
+      --edit-bg: #fff3e6;
+      --body-fg: #e1ebf5;
+      --muted: #8ea6be;
+      --heading: #c5d9ec;
+      --title: #f5f9fc;
+      --chart-line: 217, 138, 95;
+      --chart-line-2: 52, 140, 168;
+      --save-bg: #2a6e7c;
+      --danger: #9e4545;
+      --aj-bg: #e0f2f6;
+      --aj-text: #1b5f6f;
+      --aj-head-bg: #bfe0e8;
+      --aj-head-text: #123e48;
+      --chart-area-bg: #132236;
+      --grid: rgba(180, 205, 230, 0.1);
+      --diff-pos-bg: #22626c;
+      --diff-neg-bg: #7d3f3f;
+      --diff-fg: #eef5f8;
+      --kpi-bg: #23476a;
+      --tag-agui-bg: #ffe2cf;
+      --tag-agui-fg: #b6612e;
+      --dot-agui: #e89a6c;
+      --shadow: rgba(0, 0, 0, 0.25);
+    }
+    /* Tema Riverplatense — blanco, banda roja y negro */
+    [data-theme="river"] {
+      --bg: #f6f5f3;
+      --surface: #ffffff;
+      --surface-2: #f0eeeb;
+      --border: #dcd6d0;
+      --header-bg: #c8102e;
+      --header-text: #ffffff;
+      --row-bg: #ffffff;
+      --row-alt: #faf6f6;
+      --row-hover: #fbe9ec;
+      --row-border: #eee5e5;
+      --row-head: #8e0c22;
+      --text: #1e1e1e;
+      --accent: #c8102e;
+      --accent-hover: #a50d26;
+      --accent-soft: #e7a1ad;
+      --on-accent: #ffffff;
+      --btn-bg: #222222;
+      --btn-hover: #000000;
+      --btn-fg: #ffffff;
+      --total-nom: #a50d26;
+      --positive: #2f7d55;
+      --input-bg: #ffffff;
+      --input-fg: #1e1e1e;
+      --edit-bg: #fff6f7;
+      --body-fg: #2a2a2a;
+      --muted: #75706c;
+      --heading: #8e0c22;
+      --title: #1a1a1a;
+      --chart-line: 200, 16, 46;
+      --chart-line-2: 40, 40, 40;
+      --save-bg: #1f1f1f;
+      --danger: #7d1a1a;
+      --aj-bg: #f1f1f1;
+      --aj-text: #111111;
+      --aj-head-bg: #2b2b2b;
+      --aj-head-text: #ffffff;
+      --chart-area-bg: #ffffff;
+      --grid: rgba(0, 0, 0, 0.07);
+      --diff-pos-bg: #e6f2ec;
+      --diff-neg-bg: #fbe3e6;
+      --diff-fg: #1e1e1e;
+      --kpi-bg: #f6e1e5;
+      --tag-agui-bg: #1f1f1f;
+      --tag-agui-fg: #ffffff;
+      --dot-agui: #222222;
+      --shadow: rgba(0, 0, 0, 0.07);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--body-fg);
+      min-height: 100vh;
+      padding: 1.25rem 1rem 3rem;
+      line-height: 1.4;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .page { max-width: 1450px; margin: 0 auto; }
+    [data-theme="river"] body {
+      background:
+        linear-gradient(45deg, transparent 0 44%, rgba(200, 16, 46, 0.13) 44% 56%, transparent 56% 100%) fixed,
+        var(--bg);
+    }
+    [data-theme="river"] .app-header h1 { border-bottom: 3px solid var(--accent); padding-bottom: 0.15rem; }
+    .app-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;
+    }
+    .app-header h1 { font-size: 1.35rem; font-weight: 700; color: var(--title); }
+    .app-header h1 span { color: var(--accent); font-weight: 500; font-size: 0.88rem; margin-left: 0.4rem; }
+    .badge {
+      background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--muted); font-size: 0.75rem; padding: 0.3rem 0.7rem; border-radius: 999px;
+    }
+    .hbtn {
+      background: var(--btn-bg); border: 1px solid var(--btn-bg); color: var(--btn-fg);
+      padding: 0.4rem 0.85rem; border-radius: 8px; font-family: inherit; font-size: 0.84rem;
+      font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .hbtn:hover { background: var(--btn-hover); }
+    .hbtn.active { background: var(--accent); border-color: var(--accent-hover); color: var(--on-accent); }
+    .form-card {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    .form-card.visible { display: block; }
+    .form-card h2 {
+      font-size: 0.95rem; font-weight: 600; color: var(--heading);
+      margin-bottom: 0.85rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.65rem 0.8rem;
+    }
+    .form-group label {
+      display: block; font-size: 0.7rem; color: var(--muted); margin-bottom: 0.2rem; font-weight: 500;
+    }
+    .form-group input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--input-fg);
+      padding: 0.42rem 0.5rem;
+      border-radius: 7px;
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+    .form-group input:focus { outline: none; border-color: var(--accent); }
+    .otros-section {
+      grid-column: 1 / -1;
+      background: var(--surface-2);
+      border-radius: 8px;
+      padding: 0.7rem 0.8rem;
+      margin-top: 0.3rem;
+    }
+    .otros-section h3 {
+      font-size: 0.78rem; color: var(--heading); margin-bottom: 0.5rem; font-weight: 600;
+    }
+    .otros-row {
+      display: flex; gap: 0.5rem; margin-bottom: 0.4rem; align-items: center;
+    }
+    .otros-row input {
+      flex: 1;
+      background: var(--input-bg); border: 1px solid var(--border); color: var(--input-fg);
+      padding: 0.38rem 0.5rem; border-radius: 7px; font-family: inherit; font-size: 0.85rem;
+    }
+    .otros-row input.concepto { flex: 1.4; }
+    .otros-row button {
+      background: var(--accent); border: none; color: var(--on-accent); width: 28px; height: 28px;
+      border-radius: 6px; cursor: pointer; font-size: 1rem; line-height: 1;
+    }
+    .otros-row button.del { background: var(--muted); }
+    .otros-add {
+      background: transparent; border: 1px dashed var(--accent); color: var(--accent);
+      padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.78rem; cursor: pointer;
+      margin-top: 0.3rem;
+    }
+    .form-actions {
+      display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.9rem; align-items: center;
+    }
+    .btn {
+      border: none; border-radius: 8px; padding: 0.48rem 0.95rem;
+      font-family: inherit; font-size: 0.84rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-primary { background: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: var(--btn-bg); color: var(--btn-fg); border: 1px solid var(--btn-bg); }
+    .btn-secondary:hover { background: var(--btn-hover); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .form-msg { font-size: 0.8rem; color: var(--positive); }
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 0.85rem; align-items: center;
+    }
+    .controls label { font-size: 0.82rem; color: var(--muted); }
+    .controls select {
+      background: var(--input-bg); border: 1px solid var(--border); color: var(--input-fg);
+      padding: 0.4rem 0.7rem; border-radius: 8px; font-family: inherit; font-size: 0.84rem;
+      cursor: pointer;
+    }
+    .controls button {
+      background: var(--btn-bg); border: 1px solid var(--btn-bg); color: var(--btn-fg);
+      padding: 0.4rem 0.7rem; border-radius: 8px; font-family: inherit; font-size: 0.84rem;
+      font-weight: 600; cursor: pointer;
+    }
+    .controls button:hover { background: var(--btn-hover); }
+    .controls button.is-on { background: var(--positive); border-color: var(--positive); color: #fff; }
+    .controls button.c-accent { background: var(--accent); border-color: var(--accent-hover); color: var(--on-accent); font-weight: 600; }
+    .controls button.c-accent:hover { background: var(--accent-hover); }
+    .controls button.c-save { background: var(--save-bg); border-color: var(--save-bg); color: #fff; font-weight: 600; }
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.8rem; font-size: 0.77rem; color: var(--muted);
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .dot.nom { background: var(--total-nom); }
+    .dot.aj { background: var(--positive); }
+    .dot.agui { background: var(--dot-agui); }
+    .table-card {
+      background: var(--surface); border-radius: 14px; border: 1px solid var(--border);
+      box-shadow: 0 8px 28px var(--shadow); overflow: hidden;
+    }
+    .table-scroll { overflow-x: auto; max-height: 64vh; overflow-y: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.81rem; min-width: 1200px; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: var(--header-bg); color: var(--header-text);
+      font-weight: 600; text-align: left; padding: 0.6rem 0.55rem;
+      white-space: nowrap; border-bottom: 2px solid var(--accent-soft);
+    }
+    thead th:first-child { padding-left: 0.85rem; }
+    thead th.num { text-align: right; }
+    thead th.aj { background: var(--aj-head-bg); color: var(--aj-head-text); }
+    tbody td {
+      padding: 0.35rem 0.45rem; color: var(--text); background: var(--row-bg);
+      border-bottom: 1px solid var(--row-border); white-space: nowrap;
+      height: 34px;
+    }
+    tbody tr:nth-child(even) td { background: var(--row-alt); }
+    tbody tr:hover td { background: var(--row-hover); }
+    tbody td:first-child { padding-left: 0.85rem; font-weight: 600; color: var(--row-head); }
+    tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tbody td.total-nom { text-align: right; font-weight: 600; color: var(--total-nom); }
+    tbody td.total-aj {
+      text-align: right; font-weight: 700; color: var(--aj-text);
+      background: var(--aj-bg) !important;
+    }
+    td.editable { cursor: cell; position: relative; }
+    td.editable:hover { outline: 1px solid var(--accent-soft); outline-offset: -1px; }
+    td.editable input {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: 2px solid var(--accent);
+      background: var(--edit-bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.81rem;
+      text-align: right;
+      padding: 0 0.4rem;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .tag {
+      display: inline-block; font-size: 0.58rem; font-weight: 600;
+      padding: 0.08rem 0.28rem; border-radius: 3px; margin-left: 0.2rem;
+      text-transform: uppercase;
+    }
+    .tag.agui { background: var(--tag-agui-bg); color: var(--tag-agui-fg); }
+    .btn-row {
+      background: transparent; border: 1px solid var(--accent-soft); color: var(--total-nom);
+      font-size: 0.68rem; padding: 0.12rem 0.35rem; border-radius: 4px; cursor: pointer;
+      margin-left: 0.3rem;
+    }
+    .btn-row:hover { background: var(--row-hover); }
+    .btn-row.del { border-color: var(--danger); color: var(--danger); }
+    .btn-row.del:hover { background: var(--diff-neg-bg); }
+    .table-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.6rem 1rem; background: var(--surface-2); border-top: 1px solid var(--border);
+      font-size: 0.77rem; color: var(--muted); flex-wrap: wrap; gap: 0.4rem;
+    }
+    .table-footer strong { color: var(--heading); }
+
+    .compare-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 4px 18px var(--shadow);
+    }
+    .compare-card h2 {
+      font-size: 0.95rem; font-weight: 600; color: var(--heading); margin-bottom: 0.8rem;
+    }
+    .compare-card h3 { color: var(--heading); }
+    .compare-card .hint { font-size: 0.8rem; color: var(--muted); }
+    .compare-controls {
+      display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; margin-bottom: 1rem;
+    }
+    .compare-controls label {
+      font-size: 0.75rem; color: var(--muted); display: block; margin-bottom: 0.25rem;
+    }
+    .compare-controls select, .field-input {
+      background: var(--input-bg); border: 1px solid var(--border); color: var(--input-fg);
+      padding: 0.45rem 0.6rem; border-radius: 7px; font-family: inherit; font-size: 0.88rem;
+      min-width: 160px;
+    }
+    .compare-diff {
+      margin-top: 0.9rem;
+      background: var(--diff-pos-bg);
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      font-size: 0.88rem;
+      color: var(--diff-fg);
+      text-align: center;
+    }
+    .compare-diff.neg { background: var(--diff-neg-bg); }
+    .compare-diff.kpi { background: var(--kpi-bg); }
+    .compare-diff strong { font-size: 1.05rem; }
+
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 700px; }
+    .cmp-table th {
+      background: var(--header-bg); color: var(--header-text); font-weight: 600;
+      padding: 0.55rem 0.6rem; text-align: left; white-space: nowrap;
+    }
+    .cmp-table th.num { text-align: right; }
+    .cmp-table td {
+      padding: 0.45rem 0.6rem; background: var(--row-bg); color: var(--text);
+      border-bottom: 1px solid var(--row-border); white-space: nowrap;
+    }
+    .cmp-table tr:nth-child(even) td { background: var(--row-alt); }
+    .cmp-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .cmp-table td.pos { color: var(--aj-text); font-weight: 600; }
+    .cmp-table td.neg { color: var(--danger); font-weight: 600; }
+    .cmp-table td.hl-a { font-weight: 600; background: var(--header-bg) !important; }
+    .cmp-table td.hl-b { font-weight: 600; background: var(--aj-head-bg) !important; }
+    .cmp-table td.hl-aj { font-weight: 700; background: var(--aj-bg) !important; }
+    .cmp-table td small.sub { font-weight: 400; color: var(--muted); }
+    .cmp-table tr.total-row td { font-weight: 700; background: var(--aj-bg) !important; }
+
+    .concept-filters .chk {
+      font-size: 0.75rem; color: var(--body-fg); display: flex; align-items: center; gap: 0.25rem;
+      background: var(--surface-2); border: 1px solid var(--border); padding: 0.2rem 0.45rem;
+      border-radius: 6px; cursor: pointer; user-select: none;
+    }
+    .concept-filters .chk input { accent-color: var(--accent); }
+    .concept-filters .chk:has(input:not(:checked)) { opacity: 0.55; }
+    .concept-filters .lbl { font-size: 0.78rem; color: var(--muted); }
+
+    th.col-toggle { cursor: pointer; user-select: none; }
+    th.col-toggle:hover { background: var(--accent-soft) !important; }
+    th.col-toggle.is-adjusted { background: var(--aj-head-bg) !important; color: var(--aj-head-text); }
+    th.col-toggle.is-adjusted::after { content: " ▲"; font-size: 0.65rem; }
+
+    .collapse-head {
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none;
+    }
+    .collapse-head h2 { margin: 0 !important; }
+    .chev { font-size: 1.1rem; color: var(--accent); }
+
+    .dash-toolbar {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+      margin-bottom: 0.9rem; padding: 0.75rem 1rem;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 0.9rem;
+    }
+    @media (max-width: 900px) {
+      .dash-grid { grid-template-columns: 1fr; }
+    }
+    .dash-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.85rem 1rem; box-shadow: 0 4px 14px var(--shadow);
+      display: flex; flex-direction: column; min-height: 0;
+    }
+    .dash-card h2 {
+      font-size: 0.9rem; font-weight: 600; color: var(--heading); margin: 0 0 0.25rem;
+    }
+    .dash-card .desc {
+      font-size: 0.72rem; color: var(--muted); margin-bottom: 0.55rem; line-height: 1.35;
+    }
+    .dash-chart { position: relative; height: 220px; flex: 0 0 auto; }
+    .dash-card-wide { grid-column: 1 / -1; }
+    .dash-pie-layout {
+      display: grid;
+      grid-template-columns: minmax(200px, 280px) 1fr;
+      gap: 0.8rem;
+      align-items: center;
+    }
+    @media (max-width: 700px) {
+      .dash-pie-layout { grid-template-columns: 1fr; }
+    }
+    .dash-chart-pie { position: relative; height: 240px; }
+    .dash-table-wrap { margin-top: 0.55rem; max-height: 160px; overflow: auto; }
+    .dash-table-wrap .cmp-table { font-size: 0.75rem; min-width: 0; }
+    .dash-table-wrap .cmp-table th,
+    .dash-table-wrap .cmp-table td { padding: 0.28rem 0.4rem; }
+    .dash-kpi {
+      grid-column: 1 / -1;
+      text-align: center; padding: 0.75rem 1rem;
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px;
+      color: var(--body-fg); font-size: 0.88rem;
+    }
+    .dash-kpi strong { font-size: 1.2rem; color: var(--accent); }
+    .dash-toolbar select {
+      background: var(--input-bg); border: 1px solid var(--border); color: var(--input-fg);
+      padding: 0.4rem 0.55rem; border-radius: 7px; font-family: inherit; font-size: 0.84rem;
+    }
+
+    .dash-chart, .chart-bg {
+      background: var(--chart-area-bg, transparent);
+      border-radius: 8px;
+    }
+
+    .palette-panel {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 18px var(--shadow);
+    }
+    .palette-panel.visible { display: block; }
+    .palette-panel h2 {
+      font-size: 0.95rem; font-weight: 600; color: var(--heading); margin: 0 0 0.75rem;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.65rem 0.8rem;
+    }
+    .palette-item label {
+      display: block; font-size: 0.7rem; color: var(--muted); margin-bottom: 0.2rem; font-weight: 500;
+    }
+    .palette-item input[type="color"] {
+      width: 100%; height: 36px; border: 1px solid var(--border);
+      border-radius: 8px; background: var(--input-bg); cursor: pointer; padding: 2px;
+    }
+    .palette-actions {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.85rem; align-items: center;
+    }
+
+    .note {
+      margin-top: 0.85rem; font-size: 0.76rem; color: var(--muted); text-align: center; line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="app-header">
+      <h1>Haberes <span>nominal · ajustado · editable</span></h1>
+      <div style="display:flex;align-items:center;gap:0.55rem;flex-wrap:wrap">
+        <button type="button" id="btnViewPlanilla" class="hbtn active">Planilla</button>
+        <button type="button" id="btnViewGraficos" class="hbtn">📈 Más gráficos</button>
+        <button type="button" id="btnThemeToggle" class="hbtn" title="Cambiar combinación de colores">🎨 Tema</button>
+        <div class="badge" id="badgeInfo">Cargando…</div>
+      </div>
+    </header>
+
+    <div id="viewPlanilla">
+    <div class="form-card" id="formCard">
+      <h2 id="formTitle">Agregar mes</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Mes (ej: septiembre 26)</label>
+          <input type="text" id="fMes" placeholder="septiembre 26" />
+        </div>
+        <div class="form-group">
+          <label>Haberes</label>
+          <input type="number" id="fHab" step="1" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Caja</label>
+          <input type="number" id="fCaja" step="1" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Productividad</label>
+          <input type="number" id="fProd" step="1" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Horas extra</label>
+          <input type="number" id="fHs" step="1" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Aguinaldo</label>
+          <input type="number" id="fAgui" step="1" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Total Nominal</label>
+          <input type="number" id="fTotal" step="1" min="0" placeholder="opcional" />
+        </div>
+        <div class="form-group">
+          <label>Inflación %</label>
+          <input type="number" id="fInfl" step="0.1" min="0" />
+        </div>
+        <div class="otros-section">
+          <h3>Otros ingresos (podés agregar varios conceptos)</h3>
+          <div id="otrosList"></div>
+          <button type="button" class="otros-add" id="btnAddOtro">+ Agregar otro concepto</button>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="btnSave">Guardar mes</button>
+        <button class="btn btn-secondary" id="btnCancel">Cancelar</button>
+        <button class="btn btn-secondary" id="btnCalcTotal">Calcular total</button>
+        <button class="btn btn-danger" id="btnDeleteMonth" type="button" style="display:none">Eliminar mes</button>
+        <span class="form-msg" id="formMsg"></span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="btnEditToggle" type="button" title="Habilitar edición de la planilla">✏️ Editar</button>
+      <button id="btnShowForm" type="button" class="c-accent" style="display:none">＋ Agregar / Editar mes</button>
+      <button id="btnSaveAll" type="button" class="c-save">💾 Guardar</button>
+      <span id="saveStatus" style="font-size:0.78rem;color:var(--positive);min-width:7rem"></span>
+      <label>Año:
+        <select id="yearFilter"><option value="all">Todos</option></select>
+      </label>
+      <label>Mes:
+        <select id="monthFilter">
+          <option value="all">Todos</option>
+          <option value="enero">Enero</option>
+          <option value="febrero">Febrero</option>
+          <option value="marzo">Marzo</option>
+          <option value="abril">Abril</option>
+          <option value="mayo">Mayo</option>
+          <option value="junio">Junio</option>
+          <option value="julio">Julio</option>
+          <option value="agosto">Agosto</option>
+          <option value="septiembre">Septiembre</option>
+          <option value="octubre">Octubre</option>
+          <option value="noviembre">Noviembre</option>
+          <option value="diciembre">Diciembre</option>
+        </select>
+      </label>
+      <div class="concept-filters" id="conceptFilters" style="display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center">
+        <span class="lbl">Items:</span>
+        <label class="chk"><input type="checkbox" data-concept="hab" checked> Haberes</label>
+        <label class="chk"><input type="checkbox" data-concept="caja" checked> Caja</label>
+        <label class="chk"><input type="checkbox" data-concept="prod" checked> Productividad</label>
+        <label class="chk"><input type="checkbox" data-concept="hs" checked> Hs extra</label>
+        <label class="chk"><input type="checkbox" data-concept="agui" checked> Aguinaldo</label>
+        <label class="chk"><input type="checkbox" data-concept="otros" checked> Otros</label>
+      </div>
+      <button id="btnChart" type="button">📊 Gráfico</button>
+      <button id="btnImport" type="button" style="display:none">📥 Importar JSON</button>
+      <input type="file" id="fileImport" accept=".json,application/json" style="display:none" />
+      <button id="btnExport" type="button" style="display:none">📤 Exportar JSON</button>
+    </div>
+
+
+      <div class="legend">
+      <div class="legend-item"><span class="dot nom"></span> Total nominal</div>
+      <div class="legend-item"><span class="dot aj"></span> Total ajustado</div>
+      <div class="legend-item"><span class="dot agui"></span> Mes con aguinaldo</div>
+      <div class="legend-item">Clic en celda → escribí → Enter avanza · Escape cancela</div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>MES</th>
+              <th class="num col-toggle" data-field="hab" title="Doble clic: nominal / ajustado">HABERES</th>
+              <th class="num col-toggle" data-field="caja" title="Doble clic: nominal / ajustado">CAJA</th>
+              <th class="num col-toggle" data-field="prod" title="Doble clic: nominal / ajustado">PRODUCT.</th>
+              <th class="num col-toggle" data-field="hs" title="Doble clic: nominal / ajustado">HS EXTRA</th>
+              <th class="num col-toggle" data-field="agui" title="Doble clic: nominal / ajustado">AGUINALDO</th>
+              <th class="num col-toggle" data-field="otros" title="Doble clic: nominal / ajustado">OTROS</th>
+              <th class="num">TOTAL NOMINAL</th>
+              <th class="num">INFL %</th>
+              <th class="num aj">TOTAL AJUSTADO</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <span id="footerCount">—</span>
+        <span>Ajuste = producto (1+infl) desde el mes siguiente hasta el último</span>
+      </div>
+    </div>
+
+    <p class="note">
+      Datos guardados en este navegador. Tocá <strong>✏️ Editar</strong> para habilitar la carga. Clic en una celda numérica → escribí el valor → <strong>Enter</strong> confirma y pasa a la siguiente · <strong>Escape</strong> cancela.
+      Con la edición activa podés <strong>exportar</strong> e <strong>importar</strong> respaldos en JSON.
+    </p>
+    <div class="compare-card" id="chartCard" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem;flex-wrap:wrap;gap:0.5rem">
+        <h2 style="margin:0">Ingresos totales ajustados</h2>
+        <div style="display:flex;gap:0.4rem">
+          <button class="btn btn-primary" id="btnRefreshChart" type="button" style="padding:0.3rem 0.7rem;font-size:0.8rem">Actualizar gráfico</button>
+          <button class="btn btn-secondary" id="btnCloseChart" type="button" style="padding:0.3rem 0.7rem;font-size:0.8rem">Cerrar</button>
+        </div>
+      </div>
+      <div class="chart-bg" style="position:relative;height:320px;padding:0.35rem">
+        <canvas id="chartCanvas"></canvas>
+      </div>
+    </div>
+
+    <div class="compare-card" id="compareCard">
+      <div class="collapse-head" id="compareToggle">
+        <h2>Comparar dos meses</h2>
+        <span id="compareChevron" class="chev">▶</span>
+      </div>
+      <div id="compareBody" style="display:none;margin-top:0.8rem">
+      <div class="compare-controls">
+        <div>
+          <label>Mes A</label>
+          <select id="cmpA"></select>
+        </div>
+        <div>
+          <label>Mes B</label>
+          <select id="cmpB"></select>
+        </div>
+        <button class="btn btn-primary" id="btnCompare" type="button" style="height:34px">Comparar</button>
+      </div>
+      <div id="compareResult" style="display:none">
+        <div class="table-scroll" style="max-height:none">
+          <table class="cmp-table" id="cmpTable">
+            <thead>
+              <tr>
+                <th>MES</th>
+                <th class="num">HABERES</th>
+                <th class="num">CAJA</th>
+                <th class="num">PRODUCTIVIDAD</th>
+                <th class="num">HS EXTRA</th>
+                <th class="num">AGUINALDO</th>
+                <th class="num">OTROS</th>
+                <th class="num">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody id="cmpBody"></tbody>
+          </table>
+        </div>
+        <div class="compare-diff" id="diffBox" style="margin-top:0.8rem"></div>
+      </div>
+      </div>
+    </div>
+
+    <div class="compare-card" id="avgCard">
+      <div class="collapse-head" id="avgToggle">
+        <h2>Promedio móvil (ajustado)</h2>
+        <span id="avgChevron" class="chev">▶</span>
+      </div>
+      <div id="avgBody" style="margin-top:0.8rem;display:none">
+        <div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:flex-end;margin-bottom:0.75rem">
+          <div class="compare-controls" style="margin:0">
+            <div>
+              <label for="avgWindow">Ventana (meses)</label>
+              <input type="number" id="avgWindow" class="field-input" min="2" max="120" value="12" step="1" style="width:88px;min-width:0" />
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnAvgWindow" type="button" style="height:34px">Aplicar</button>
+          <span id="avgWindowHint" class="hint"></span>
+        </div>
+        <p class="hint" style="margin-bottom:0.7rem">
+          Solo se muestran meses con <strong>historial completo</strong> de la ventana elegida (valores a hoy).
+          Respeta los <strong>items filtrados</strong>. Ej.: ventana 12 → el primer punto es el 12.º mes de la serie.
+        </p>
+        <div class="table-scroll" style="max-height:420px">
+          <table class="cmp-table" id="avgTable">
+            <thead>
+              <tr>
+                <th>MES</th>
+                <th class="num avg-col" data-concept="hab">HABERES</th>
+                <th class="num avg-col" data-concept="caja">CAJA</th>
+                <th class="num avg-col" data-concept="prod">PRODUCT.</th>
+                <th class="num avg-col" data-concept="hs">HS EXTRA</th>
+                <th class="num avg-col" data-concept="agui">AGUINALDO</th>
+                <th class="num avg-col" data-concept="otros">OTROS</th>
+                <th class="num">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody id="avgBodyRows"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:1rem">
+          <h3 style="font-size:0.88rem;margin-bottom:0.5rem;font-weight:600">Evolución del promedio móvil (solo ventana completa)</h3>
+          <div class="chart-bg" style="position:relative;height:300px;padding:0.35rem">
+            <canvas id="avgChartCanvas"></canvas>
+          </div>
+          <div id="seriesGrandAvg" class="compare-diff kpi" style="margin-top:0.9rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-card" id="convertCard">
+      <div class="collapse-head" id="convertToggle">
+        <h2>Convertir de una fecha a otra</h2>
+        <span id="convertChevron" class="chev">▶</span>
+      </div>
+      <div id="convertBody" style="display:none">
+        <div class="compare-controls" style="margin-top:0.8rem">
+          <div>
+            <label>Monto de (origen)</label>
+            <select id="convFrom"></select>
+          </div>
+          <div>
+            <label>Equivalente en (destino)</label>
+            <select id="convTo"></select>
+          </div>
+          <button class="btn btn-primary" id="btnConvert" type="button" style="height:34px">Calcular</button>
+        </div>
+        <div id="convertResult" style="display:none">
+          <div class="table-scroll" style="max-height:none">
+            <table class="cmp-table" id="convTable">
+              <thead>
+                <tr>
+                  <th>CONCEPTO</th>
+                  <th class="num" id="convThFrom">En origen</th>
+                  <th class="num" id="convThTo">En destino</th>
+                  <th class="num">Factor</th>
+                </tr>
+              </thead>
+              <tbody id="convBody"></tbody>
+            </table>
+          </div>
+          <p id="convertNote" class="hint" style="margin-top:0.6rem;font-size:0.78rem;text-align:center"></p>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /viewPlanilla -->
+
+    <div id="viewGraficos" style="display:none">
+      <div class="dash-toolbar">
+        <div class="concept-filters" id="gConceptFilters" style="display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center">
+          <span class="lbl">Items:</span>
+          <label class="chk"><input type="checkbox" data-concept="hab" checked> Haberes</label>
+          <label class="chk"><input type="checkbox" data-concept="caja" checked> Caja</label>
+          <label class="chk"><input type="checkbox" data-concept="prod" checked> Productividad</label>
+          <label class="chk"><input type="checkbox" data-concept="hs" checked> Hs extra</label>
+          <label class="chk"><input type="checkbox" data-concept="agui" checked> Aguinaldo</label>
+          <label class="chk"><input type="checkbox" data-concept="otros" checked> Otros</label>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.7rem;align-items:center;font-size:0.8rem;color:var(--muted)">
+          <span>Valores:</span>
+          <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer"><input type="radio" name="gValMode" value="aj" checked> Ajustados</label>
+          <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer"><input type="radio" name="gValMode" value="nom"> Nominales</label>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-card">
+          <h2>Promedio por mes del año</h2>
+          <p class="desc">Promedio de cada mes calendario (ene–dic) en todos los años disponibles.</p>
+          <div class="dash-chart"><canvas id="monthAvgChart"></canvas></div>
+          <div class="dash-table-wrap">
+            <table class="cmp-table" id="monthAvgTable">
+              <thead>
+                <tr>
+                  <th>MES</th>
+                  <th class="num">PROM.</th>
+                  <th class="num">AÑOS</th>
+                  <th class="num">MÍN</th>
+                  <th class="num">MÁX</th>
+                </tr>
+              </thead>
+              <tbody id="monthAvgBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <h2>Promedio por año</h2>
+          <p class="desc">Promedio mensual de ingresos de cada año (suma del año ÷ cantidad de meses cargados).</p>
+          <div class="dash-chart"><canvas id="yearAvgChart"></canvas></div>
+          <div class="dash-table-wrap">
+            <table class="cmp-table" id="yearAvgTable">
+              <thead>
+                <tr>
+                  <th>AÑO</th>
+                  <th class="num">PROM.</th>
+                  <th class="num">MESES</th>
+                  <th class="num">MÍN</th>
+                  <th class="num">MÁX</th>
+                </tr>
+              </thead>
+              <tbody id="yearAvgBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="dash-card dash-card-wide">
+          <h2>Composición por ítem (promedio)</h2>
+          <p class="desc">
+            Participación de cada concepto sobre el <strong>promedio</strong> del período elegido.
+            Los <strong>Items</strong> de arriba siguen valiendo; este selector es solo para el período.
+          </p>
+          <div class="dash-toolbar" style="padding:0;border:none;background:transparent;margin-bottom:0.7rem;font-size:0.8rem;color:var(--muted);align-items:flex-end">
+            <div>
+              <label for="shareScope" style="display:block;font-size:0.7rem;margin-bottom:0.2rem">Período</label>
+              <select id="shareScope">
+                <option value="all">Toda la serie</option>
+                <option value="year">Por año</option>
+                <option value="month">Por mes del año</option>
+              </select>
+            </div>
+            <div id="shareYearWrap" style="display:none">
+              <label for="shareYear" style="display:block;font-size:0.7rem;margin-bottom:0.2rem">Año</label>
+              <select id="shareYear" style="min-width:100px"></select>
+            </div>
+            <div id="shareMonthWrap" style="display:none">
+              <label for="shareMonth" style="display:block;font-size:0.7rem;margin-bottom:0.2rem">Mes</label>
+              <select id="shareMonth" style="min-width:120px">
+                <option value="enero">Enero</option>
+                <option value="febrero">Febrero</option>
+                <option value="marzo">Marzo</option>
+                <option value="abril">Abril</option>
+                <option value="mayo">Mayo</option>
+                <option value="junio">Junio</option>
+                <option value="julio">Julio</option>
+                <option value="agosto">Agosto</option>
+                <option value="septiembre">Septiembre</option>
+                <option value="octubre">Octubre</option>
+                <option value="noviembre">Noviembre</option>
+                <option value="diciembre">Diciembre</option>
+              </select>
+            </div>
+            <span id="shareScopeHint" style="font-size:0.75rem;color:var(--muted)"></span>
+          </div>
+          <div class="dash-pie-layout">
+            <div class="dash-chart-pie chart-bg"><canvas id="itemShareChart"></canvas></div>
+            <div class="dash-table-wrap" style="max-height:240px;margin-top:0">
+              <table class="cmp-table" id="itemShareTable">
+                <thead>
+                  <tr>
+                    <th>ÍTEM</th>
+                    <th class="num">PROMEDIO</th>
+                    <th class="num">%</th>
+                  </tr>
+                </thead>
+                <tbody id="itemShareBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-kpi" id="monthGrandAvg">—</div>
+      </div>
+
+      <p class="note">Dashboard de gráficos · mismos datos que la planilla · filtros compartidos arriba.</p>
+    </div><!-- /viewGraficos -->
+  </div>
+
+  <script>
+    const DEFAULT_DATA = [
+      ["enero 16", 10050, 6450, 2918, 9151, null, 28570, 4.0],
+      ["febrero 16", 10248, 7247, 3200, 6109, null, 26804, 3.7],
+      ["marzo 16", 10252, 4592, 2718, 9945, null, 27507, 3.4],
+      ["abril 16", 10165, 3200, 2493, 9384, null, 25242, 3.6],
+      ["mayo 16", 11766, 1445, 2225, 6182, null, 27801, 4.2],
+      ["junio 16", 11210, 3497, 2446, 7239, 10948, 35339, 3.1],
+      ["julio 16", 11033, 4318, 2678, 11984, null, 30013, 2.0],
+      ["agosto 16", 13945, 3668, 2703, 10829, null, 31145, 1.5],
+      ["septiembre 16", 12591, 1986, 2643, 9729, null, 26949, 1.2],
+      ["octubre 16", 12575, 4023, 2642, 9666, null, 28907, 1.3],
+      ["noviembre 16", 12398, 3979, 2769, 10879, null, 30025, 1.4],
+      ["diciembre 16", 12782, 1, 2752, 11048, 10130, 36712, 1.6],
+      ["enero 17", 12925, 8569, 4614, 11353, null, 37860, 1.3],
+      ["febrero 17", 16494, 9958, 5034, 18919, null, 51445, 2.5],
+      ["marzo 17", 17776, 6168, 4259, 11949, null, 40152, 2.4],
+      ["abril 17", 17060, 5216, 3732, 12286, null, 38295, 2.6],
+      ["mayo 17", 16190, 4806, 3624, 15027, null, 39647, 1.4],
+      ["junio 17", 18913, 1647, 4024, 15811, 15452, 55847, 1.2],
+      ["julio 17", 18428, 5273, 4247, 13114, null, 41063, 1.7],
+      ["agosto 17", 18835, 5350, 4458, 5958, null, 34602, 1.4],
+      ["septiembre 17", 17583, 6235, 4514, 15910, null, 44242, 1.9],
+      ["octubre 17", 19738, 4394, 4267, 14106, null, 42505, 1.5],
+      ["noviembre 17", 18933, 5754, 4813, 15039, null, 44539, 1.4],
+      ["diciembre 17", 18710, 2736, 4340, 13473, 14598, 53858, 3.1],
+      ["enero 18", 19419, 9386, 6022, 16956, null, 52297, 1.8],
+      ["febrero 18", 21442, 9982, 6378, 18030, null, 55832, 2.4],
+      ["marzo 18", 21316, 7470, 5166, 16127, null, 50079, 2.3],
+      ["abril 18", 20633, 7169, 5467, 15482, null, 48750, 2.7],
+      ["mayo 18", 20287, 6388, 4756, 16038, null, 47468, 2.1],
+      ["junio 18", 25836, 5732, 4618, 9382, 18965, 75494, 3.7],
+      ["julio 18", 22994, 6695, 5075, 8498, null, 43263, 3.1],
+      ["agosto 18", 21744, 7252, 4871, 18871, null, 52738, 3.9],
+      ["septiembre 18", 23845, 6353, 4572, 18362, null, 53132, 6.5],
+      ["octubre 18", 25823, 7082, 4954, 21966, null, 59826, 5.4],
+      ["noviembre 18", 26241, 7812, 5005, 19950, null, 59008, 3.2],
+      ["diciembre 18", 21053, 7257, 5223, 20488, 19219, 80240, 2.6],
+      ["enero 19", 25979, 13059, 7279, 21853, null, 68169, 2.9],
+      ["febrero 19", 28286, 13058, 7081, 29711, null, 78137, 3.8],
+      ["marzo 19", 26394, 9423, 6046, 27177, null, 69041, 4.7],
+      ["abril 19", 31927, 7519, 4909, 21518, null, 65873, 3.4],
+      ["mayo 19", 32684, 8343, 5161, 20242, null, 66430, 3.1],
+      ["junio 19", 30162, 9219, 5857, 24056, 24557, 93851, 2.7],
+      ["julio 19", 33801, 10014, 6456, 29447, null, 79718, 2.2],
+      ["agosto 19", 33213, 9707, 6781, 32626, null, 82327, 4.0],
+      ["septiembre 19", 36081, 9645, 6828, 28036, null, 81520, 5.9],
+      ["octubre 19", 34258, 10209, 7154, 21779, null, 74330, 3.3],
+      ["noviembre 19", 32533, 9823, 6721, 29202, null, 78280, 4.3],
+      ["diciembre 19", 36857, 11302, 8101, 27684, 25516, 109459, 3.7],
+      ["enero 20", 36196, 19474, 11910, 29325, null, 97716, 2.3],
+      ["febrero 20", 39494, 20224, 13046, 32355, null, 105119, 2.0],
+      ["marzo 20", 42699, 8367, 6247, 15189, null, 72501, 3.3],
+      ["abril 20", 36930, 1, 1, 2, null, 36934, 1.5],
+      ["mayo 20", 32234, 1, 1, 11500, null, 43736, 1.5],
+      ["junio 20", 33922, 1, 2, 3765, 32480, 72099, 2.2],
+      ["julio 20", 32234, 10556, 10556, 3766, null, 59619, 1.9],
+      ["agosto 20", 32234, 10556, 10556, 3765, null, 59618, 2.7],
+      ["septiembre 20", 33922, 10556, 10556, 3765, null, 58799, 2.8],
+      ["octubre 20", 32234, 5278, 5278, 3762, null, 46552, 3.8],
+      ["noviembre 20", 42773, 7714, 7714, 3769, null, 61970, 3.2],
+      ["diciembre 20", 38020, 7714, 7714, 6203, 26929, 99441, 4.0],
+      ["enero 21", 37473, 10556, 10556, 9444, null, 75829, 4.0],
+      ["febrero 21", 44140, 10556, 10556, 10076, null, 75328, 3.6],
+      ["marzo 21", 45981, 12034, 12034, 10462, null, 86486, 4.8],
+      ["abril 21", 51483, 9586, 14481, 11422, null, 86973, 4.1],
+      ["mayo 21", 46401, 11981, 12078, 4, null, 70464, 3.3],
+      ["junio 21", 46294, 12032, 12034, 7699, 39216, 117275, 3.2],
+      ["julio 21", 53027, 13586, 14071, 8824, null, 89507, 3.0],
+      ["agosto 21", 53037, 9532, 18114, 15814, null, 96497, 2.5],
+      ["septiembre 21", 57434, 15031, 12777, 19436, null, 104627, 3.5],
+      ["octubre 21", 64823, 16202, 12634, 20947, null, 114605, 3.5],
+      ["noviembre 21", 66929, 17283, 12926, 21745, null, 118883, 2.5],
+      ["diciembre 21", 70819, 16227, 13020, 22451, 49084, 191601, 3.8],
+      ["enero 22", 72309, 23172, 15174, 23258, null, 133914, 3.9],
+      ["febrero 22", 73746, 26096, 21429, 25224, null, 157094, 4.7],
+      ["marzo 22", 82546, 25059, 18381, 24678, null, 151115, 6.7],
+      ["abril 22", 109228, 28078, 18087, 28098, null, 183491, 6.0],
+      ["mayo 22", 91862, 26267, 16414, 28196, null, 162739, 5.1],
+      ["junio 22", 97753, 32731, 18287, 28985, 70737, 248129, 5.3],
+      ["julio 22", 109762, 40304, 20950, 32176, null, 203192, 7.4],
+      ["agosto 22", 114838, 46145, 23306, 33029, null, 217317, 7.0],
+      ["septiembre 22", 127962, 45800, 23035, 37534, null, 234330, 6.2],
+      ["octubre 22", 134243, 46271, 24194, 38164, null, 242972, 6.3],
+      ["noviembre 22", 136898, 52845, 22525, 34848, null, 250116, 4.9],
+      ["diciembre 22", 151857, 42292, 22453, 1, 105703, 322305, 5.1],
+      ["enero 23", 150239, 87117, 38118, 30154, null, 305628, 6.0],
+      ["febrero 23", 167318, 100429, 46406, 30000, null, 343793, 6.6],
+      ["marzo 23", 203207, 65433, 36039, 30000, null, 334678, 7.7],
+      ["abril 23", 192477, 68719, 36510, 30000, null, 327706, 8.4],
+      ["mayo 23", 214291, 66188, 37057, 30000, null, 347536, 7.8],
+      ["junio 23", 299184, 81516, 40304, 0, 157228, 578232, 6.0],
+      ["julio 23", 495055, 75939, 42310, 0, null, 613304, 6.3],
+      ["agosto 23", 392770, 81594, 44351, 61301, null, 580016, 12.4],
+      ["septiembre 23", 383901, 96417, 50941, 13900, null, 562417, 12.7],
+      ["octubre 23", 401867, 105298, 49147, 13900, null, 570212, 8.3],
+      ["noviembre 23", 427428, 114479, 55777, 15682, null, 613365, 12.8],
+      ["diciembre 23", 452750, 98188, 54569, 15682, 298112, 919301, 25.5],
+      ["enero 24", 496286, 183712, 79373, 19602, null, 778973, 20.6],
+      ["febrero 24", 752358, 207270, 91809, 23209, null, 1074646, 13.2],
+      ["marzo 24", 719200, 154591, 70836, 25644, null, 970271, 11.0],
+      ["abril 24", 806091, 182881, 78268, 27357, null, 1094597, 8.8],
+      ["mayo 24", 794692, 149404, 69591, 28710, null, 1042397, 4.2],
+      ["junio 24", 806380, 170105, 83750, 28710, 515913, 1604858, 4.6],
+      ["julio 24", 901380, 175554, 89367, 30562, null, 1196863, 4.0],
+      ["agosto 24", 921365, 211416, 98433, 31867, null, 1263081, 4.2],
+      ["septiembre 24", 908050, 196110, 99864, 33016, null, 1237040, 3.5],
+      ["octubre 24", 977836, 225657, 105251, 34165, null, 1342909, 2.7],
+      ["noviembre 24", 995472, 216366, 115888, 35313, null, 1363039, 2.4],
+      ["diciembre 24", 996090, 191998, 112986, 35313, 657801, 1994189, 2.7],
+      ["enero 25", 994748, 399640, 174964, 35313, null, 1604664, 2.2],
+      ["febrero 25", 1031197, 384231, 183513, 35313, null, 1634254, 2.4],
+      ["marzo 25", 1254146, 291079, 165494, 40645, null, 1755955, 3.7],
+      ["abril 25", 1154089, 297814, 157491, 40645, null, 1650040, 2.8],
+      ["mayo 25", 1207046, 255135, 145307, 44791, null, 1652280, 1.5],
+      ["junio 25", 1370350, 225857, 143385, 44791, 837846, 2622228, 1.6],
+      ["julio 25", 1225642, 251749, 159247, 48329, null, 1684967, 1.9],
+      ["agosto 25", 1299449, 252124, 167952, 43345, null, 1762870, 1.9],
+      ["septiembre 25", 1292938, 221289, 154083, 51409, null, 1719720, 2.1],
+      ["octubre 25", 1397897, 237321, 168800, 52617, null, 1856635, 2.3],
+      ["noviembre 25", 1377078, 260974, 169448, 52617, null, 1860118, 2.5],
+      ["diciembre 25", 1437950, 261898, 164371, 52617, 897550, 2814386, 2.8],
+      ["enero 26", 1492934, 440582, 243838, 13154, null, 2190508, 2.9],
+      ["febrero 26", 1435300, 405024, 244063, 52617, null, 2137004, 2.9],
+      ["marzo 26", 1872120, 256559, 205730, 60984, null, 2395392, 3.4],
+      ["abril 26", 1679222, 251548, 194746, 59050, null, 2184566, 2.6],
+      ["mayo 26", 1574868, 212879, 170610, 59050, null, 2017407, 2.1],
+      ["junio 26", 1690868, 216000, 176000, 59050, 1124548, 3266466, 1.9],
+      ["julio 26", 1641546, 192856, 176869, 62000, null, 2073272, 2.1],
+      ["agosto 26", 1667106, 249290, 194188, 63000, null, 2173584, 1.7],
+    ];
+
+    const MONTH_ORDER = [
+      "enero", "febrero", "marzo", "abril", "mayo", "junio",
+      "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    ];
+    const MONTH_LABELS = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+
+    function toObj(arr) {
+      const [mes, hab, caja, prod, hs, agui, total, infl] = arr;
+      const sumKnown = (hab || 0) + (caja || 0) + (prod || 0) + (hs || 0) + (agui || 0);
+      let otros = Math.round((total || 0) - sumKnown);
+      if (otros < 0) otros = 0;
+      const otrosList = otros > 0 ? [{ concepto: "Otros", monto: otros }] : [];
+      return { mes, hab: hab || 0, caja: caja || 0, prod: prod || 0, hs: hs || 0, agui: agui || 0, otrosList, total: total || sumKnown, infl: infl || 0 };
+    }
+
+    let data = [];
+    let editIndex = -1;
+    let currentYear = "all";
+    let currentMonth = "all";
+    let chartInstance = null;
+    let avgChartInstance = null;
+    const adjustedCols = new Set(); // columnas mostradas como ajustadas en la tabla principal
+    let editMode = false; // se habilita con el botón «Editar» (sin clave)
+
+    function setEditMode(on) {
+      editMode = !!on;
+      const btn = document.getElementById("btnEditToggle");
+      btn.classList.toggle("is-on", editMode);
+      btn.textContent = editMode ? "✅ Edición activa" : "✏️ Editar";
+      ["btnShowForm", "btnImport", "btnExport"].forEach(id => {
+        document.getElementById(id).style.display = editMode ? "" : "none";
+      });
+      if (!editMode) {
+        hideForm();
+        saveData(true);
+      }
+      render();
+    }
+
+    // Claves de almacenamiento
+    const DATA_KEY = "haberes_data_v4";
+    const THEME_KEY = "haberes_theme_v2";
+    const PALETTE_KEY = "haberes_palette_v2";
+
+    function cssVar(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+    function chartRgba(varName, alpha) {
+      const rgb = cssVar(varName) || "154, 139, 196";
+      return "rgba(" + rgb + ", " + alpha + ")";
+    }
+    function chartTextColor() { return cssVar("--muted") || "#8a8494"; }
+    function chartGridColor() { return cssVar("--grid") || "rgba(0,0,0,0.08)"; }
+    function moneyTick(v) {
+      return "$ " + (v >= 1e6 ? (v / 1e6).toFixed(1) + "M" : (v >= 1e3 ? (v / 1e3).toFixed(0) + "k" : v));
+    }
+
+    function redrawVisibleCharts() {
+      if (document.getElementById("chartCard") &&
+          document.getElementById("chartCard").style.display !== "none") drawChart();
+      if (document.getElementById("avgBody") &&
+          document.getElementById("avgBody").style.display !== "none") runAverage();
+      if (document.getElementById("viewGraficos") &&
+          document.getElementById("viewGraficos").style.display !== "none") {
+        renderMonthAvgChart();
+        renderYearAvgChart();
+        renderItemShareChart();
+      }
+    }
+
+    function hexToRgbTriplet(hex) {
+      let h = String(hex || "").replace("#", "").trim();
+      if (h.length === 3) h = h.split("").map(c => c + c).join("");
+      if (h.length !== 6) return "128, 128, 128";
+      const n = parseInt(h, 16);
+      return ((n >> 16) & 255) + ", " + ((n >> 8) & 255) + ", " + (n & 255);
+    }
+    function rgbTripletToHex(rgb) {
+      const m = String(rgb || "").match(/(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+      if (!m) return "#808080";
+      const to = (x) => ("0" + Math.max(0, Math.min(255, parseInt(x, 10))).toString(16)).slice(-2);
+      return "#" + to(m[1]) + to(m[2]) + to(m[3]);
+    }
+    function cssColorToHex(val) {
+      val = String(val || "").trim();
+      if (val.startsWith("#")) {
+        if (val.length === 4) return "#" + val[1]+val[1]+val[2]+val[2]+val[3]+val[3];
+        return val.slice(0, 7);
+      }
+      const m = val.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+      if (m) return rgbTripletToHex(m[1] + ", " + m[2] + ", " + m[3]);
+      return "#808080";
+    }
+
+    const PALETTE_KEYS = [
+      "--bg", "--surface", "--surface-2", "--chart-area-bg", "--header-bg",
+      "--accent", "--accent-soft", "--chart-line", "--chart-line-2",
+      "--body-fg", "--positive", "--border"
+    ];
+
+    function clearCustomPaletteStyles() {
+      const root = document.documentElement;
+      PALETTE_KEYS.forEach(k => root.style.removeProperty(k));
+    }
+
+    function applyCustomPalette(map, save) {
+      if (!map) return;
+      const root = document.documentElement;
+      Object.keys(map).forEach(k => {
+        if (map[k]) root.style.setProperty(k, map[k]);
+      });
+      if (save) {
+        try { localStorage.setItem(PALETTE_KEY, JSON.stringify(map)); } catch (e) {}
+      }
+      redrawVisibleCharts();
+    }
+
+    function loadCustomPalette() {
+      try {
+        const raw = localStorage.getItem(PALETTE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) { return null; }
+    }
+
+    function syncPaletteInputsFromComputed() {
+      document.querySelectorAll("#palettePanel input[type=color][data-var]").forEach(inp => {
+        const v = inp.dataset.var;
+        const val = cssVar(v);
+        inp.value = inp.dataset.rgb === "1" ? rgbTripletToHex(val) : cssColorToHex(val);
+      });
+    }
+
+    function collectPaletteFromInputs() {
+      const map = {};
+      document.querySelectorAll("#palettePanel input[type=color][data-var]").forEach(inp => {
+        const v = inp.dataset.var;
+        map[v] = inp.dataset.rgb === "1" ? hexToRgbTriplet(inp.value) : inp.value;
+      });
+      return map;
+    }
+
+    // --- Temas: Suave (por defecto) → Violeta → Océano ---
+    const THEMES = ["suave", "violeta", "oceano", "river"];
+    const THEME_NAMES = { suave: "Suave", violeta: "Violeta", oceano: "Océano", river: "Riverplatense" };
+
+    function applyTheme(theme, keepCustom) {
+      const t = THEMES.includes(theme) ? theme : "suave";
+      document.documentElement.setAttribute("data-theme", t);
+      try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
+      const btn = document.getElementById("btnThemeToggle");
+      if (btn) btn.textContent = "🎨 Tema: " + THEME_NAMES[t];
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (!keepCustom) {
+        clearCustomPaletteStyles();
+        try { localStorage.removeItem(PALETTE_KEY); } catch (e) {}
+      } else {
+        const custom = loadCustomPalette();
+        if (custom) applyCustomPalette(custom, false);
+      }
+      if (meta) meta.setAttribute("content", cssVar("--bg") || "#f4f1ec");
+      redrawVisibleCharts();
+      syncPaletteInputsFromComputed();
+    }
+    function initTheme() {
+      let t = "suave";
+      try { t = localStorage.getItem(THEME_KEY) || "suave"; } catch (e) {}
+      applyTheme(t, true);
+    }
+
+    function applyConceptVisibility() {
+      const sel = getSelectedConcepts();
+      const map = { hab: 1, caja: 2, prod: 3, hs: 4, agui: 5, otros: 6 };
+      const table = document.querySelector(".table-card table");
+      if (table) {
+        table.querySelectorAll("tr").forEach(tr => {
+          Object.entries(map).forEach(([key, colIdx]) => {
+            const cell = tr.children[colIdx];
+            if (cell) cell.style.display = sel.has(key) ? "" : "none";
+          });
+        });
+      }
+      const cmp = document.getElementById("cmpTable");
+      if (cmp) {
+        cmp.querySelectorAll("tr").forEach(tr => {
+          Object.entries(map).forEach(([key, colIdx]) => {
+            const cell = tr.children[colIdx];
+            if (cell) cell.style.display = sel.has(key) ? "" : "none";
+          });
+        });
+      }
+    }
+
+    function getSelectedConcepts() {
+      const set = new Set();
+      document.querySelectorAll("#conceptFilters input[data-concept]").forEach(cb => {
+        if (cb.checked) set.add(cb.dataset.concept);
+      });
+      return set;
+    }
+
+    function conceptValue(row, key) {
+      if (key === "otros") return otrosSum(row);
+      return row[key] || 0;
+    }
+
+    function selectedTotal(row) {
+      const sel = getSelectedConcepts();
+      let s = 0;
+      ["hab","caja","prod","hs","agui","otros"].forEach(k => {
+        if (sel.has(k)) s += conceptValue(row, k);
+      });
+      return s;
+    }
+
+    function loadData() {
+      try {
+        const saved = localStorage.getItem(DATA_KEY);
+        if (saved) { data = JSON.parse(saved); return; }
+      } catch(e) {}
+      data = DEFAULT_DATA.map(toObj);
+      saveData();
+    }
+    function saveData(showFeedback) {
+      try {
+        localStorage.setItem(DATA_KEY, JSON.stringify(data));
+        localStorage.setItem(DATA_KEY + "_saved_at", new Date().toISOString());
+        if (showFeedback) {
+          const el = document.getElementById("saveStatus");
+          if (el) {
+            const t = new Date();
+            const hh = String(t.getHours()).padStart(2, "0");
+            const mm = String(t.getMinutes()).padStart(2, "0");
+            el.textContent = "Guardado " + hh + ":" + mm;
+            el.style.color = "var(--positive)";
+            clearTimeout(saveData._tid);
+            saveData._tid = setTimeout(() => {
+              if (el.textContent.indexOf("Guardado") === 0) el.textContent = "";
+            }, 4000);
+          }
+        }
+        return true;
+      } catch (e) {
+        if (showFeedback) {
+          const el = document.getElementById("saveStatus");
+          if (el) {
+            el.textContent = "Error al guardar";
+            el.style.color = "var(--danger)";
+          }
+          alert("No se pudo guardar en este navegador.\n" + (e && e.message ? e.message : e));
+        }
+        return false;
+      }
+    }
+
+    function otrosSum(row) {
+      return (row.otrosList || []).reduce((s, o) => s + (Number(o.monto) || 0), 0);
+    }
+
+    // Orden cronológico ("enero 26" → índice)
+    function mesKey(mes) {
+      const p = String(mes || "").toLowerCase().trim().split(/\s+/);
+      const m = MONTH_ORDER.indexOf(p[0]);
+      let y = parseInt(p[p.length - 1], 10);
+      if (m < 0 || isNaN(y)) return null;
+      if (y < 100) y += 2000;
+      return y * 12 + m;
+    }
+    function sortData() {
+      if (data.every(r => mesKey(r.mes) !== null)) {
+        data.sort((a, b) => mesKey(a.mes) - mesKey(b.mes));
+      }
+    }
+
+    function buildFactors() {
+      const n = data.length;
+      const factors = new Array(n).fill(1);
+      let acc = 1;
+      for (let i = n - 2; i >= 0; i--) {
+        acc *= (1 + (data[i + 1].infl || 0) / 100);
+        factors[i] = acc;
+      }
+      return factors;
+    }
+
+    function fmt(n) {
+      if (n == null || isNaN(n)) return "—";
+      return "$ " + Math.round(n).toLocaleString("es-AR");
+    }
+    function fmtPct(p) {
+      return (p || 0).toFixed(1).replace(".", ",") + "%";
+    }
+
+    function render() {
+      const factors = buildFactors();
+      const tbody = document.getElementById("tbody");
+      tbody.innerHTML = "";
+
+      const years = [...new Set(data.map(r => r.mes.split(" ").pop()))];
+      const sel = document.getElementById("yearFilter");
+      const prev = sel.value;
+      sel.innerHTML = '<option value="all">Todos</option>';
+      years.forEach(y => {
+        const o = document.createElement("option");
+        o.value = y;
+        o.textContent = y.length <= 2 ? "20" + y : y;
+        sel.appendChild(o);
+      });
+      if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
+      currentYear = sel.value;
+
+      let shown = 0;
+      data.forEach((row, idx) => {
+        const parts = row.mes.toLowerCase().split(" ");
+        const monthName = parts[0];
+        const year = parts[parts.length - 1];
+        if (currentYear !== "all" && year !== currentYear) return;
+        if (currentMonth !== "all" && monthName !== currentMonth) return;
+
+        const oSum = otrosSum(row);
+        const factor = factors[idx];
+
+        const tr = document.createElement("tr");
+        tr.dataset.idx = idx;
+
+        let tags = "";
+        if (row.agui > 0) tags += `<span class="tag agui">aguinaldo</span>`;
+        const editBtn = editMode
+          ? `<button class="btn-row" data-action="edit" data-idx="${idx}">editar</button><button class="btn-row del" data-action="delete" data-idx="${idx}">eliminar</button>`
+          : "";
+        const ed = editMode ? " editable" : "";
+
+        tr.innerHTML = `
+          <td>${row.mes}${tags}${editBtn}</td>
+          <td class="num${ed}" data-field="hab" data-idx="${idx}">${fmt(adjustedCols.has("hab") ? row.hab * factor : row.hab)}</td>
+          <td class="num${ed}" data-field="caja" data-idx="${idx}">${fmt(adjustedCols.has("caja") ? row.caja * factor : row.caja)}</td>
+          <td class="num${ed}" data-field="prod" data-idx="${idx}">${fmt(adjustedCols.has("prod") ? row.prod * factor : row.prod)}</td>
+          <td class="num${ed}" data-field="hs" data-idx="${idx}">${fmt(adjustedCols.has("hs") ? row.hs * factor : row.hs)}</td>
+          <td class="num${ed}" data-field="agui" data-idx="${idx}">${row.agui ? fmt(adjustedCols.has("agui") ? row.agui * factor : row.agui) : "—"}</td>
+          <td class="num${ed}" data-field="otros" data-idx="${idx}" title="${(row.otrosList||[]).map(o=>o.concepto+': '+o.monto).join(' | ') || ''}">${oSum ? fmt(adjustedCols.has("otros") ? oSum * factor : oSum) : "—"}</td>
+          <td class="total-nom${ed}" data-field="total" data-idx="${idx}">${fmt(selectedTotal(row))}</td>
+          <td class="num${ed}" data-field="infl" data-idx="${idx}">${fmtPct(row.infl)}</td>
+          <td class="total-aj">${fmt(selectedTotal(row) * factor)}</td>
+        `;
+        tbody.appendChild(tr);
+        shown++;
+      });
+
+      document.getElementById("footerCount").innerHTML = `Mostrando <strong>${shown}</strong> meses`;
+      document.getElementById("badgeInfo").textContent = `${data.length} meses · local`;
+      fillCompareSelects();
+      fillConvertSelects();
+      applyConceptVisibility();
+      document.querySelectorAll("th.col-toggle").forEach(th => {
+        th.classList.toggle("is-adjusted", adjustedCols.has(th.dataset.field));
+      });
+      runAverage();
+    }
+
+    const FIELD_ORDER = ["hab", "caja", "prod", "hs", "agui", "otros", "total", "infl"];
+
+    function deleteMonth(idx) {
+      const row = data[idx];
+      if (!row) return;
+      if (!confirm("¿Eliminar el mes «" + row.mes + "»?")) return;
+      data.splice(idx, 1);
+      saveData(true);
+      hideForm();
+      render();
+    }
+
+    document.getElementById("tbody").addEventListener("click", (e) => {
+      const delBtn = e.target.closest("[data-action=delete]");
+      if (delBtn) {
+        deleteMonth(Number(delBtn.dataset.idx));
+        return;
+      }
+      const btn = e.target.closest("[data-action=edit]");
+      if (btn) {
+        openForm(Number(btn.dataset.idx));
+        return;
+      }
+      if (!editMode) return;
+      const td = e.target.closest("td.editable");
+      if (!td || td.querySelector("input")) return;
+      startCellEdit(td);
+    });
+
+    function startCellEdit(td) {
+      const idx = Number(td.dataset.idx);
+      const field = td.dataset.field;
+      const row = data[idx];
+
+      const factors = buildFactors();
+      const factor = factors[idx] || 1;
+      let currentVal = 0;
+      if (field === "infl") currentVal = row.infl || 0;
+      else if (field === "otros") {
+        currentVal = otrosSum(row);
+        if (adjustedCols.has("otros")) currentVal = currentVal * factor;
+      } else {
+        currentVal = row[field] || 0;
+        if (adjustedCols.has(field)) currentVal = currentVal * factor;
+      }
+
+      const input = document.createElement("input");
+      input.type = "number";
+      input.step = field === "infl" ? "0.1" : "1";
+      input.value = field === "infl" ? currentVal : Math.round(currentVal);
+
+      td.textContent = "";
+      td.appendChild(input);
+      input.focus();
+      input.select();
+
+      const commit = (moveNext) => {
+        let val = Number(input.value);
+        if (isNaN(val)) val = 0;
+
+        // Si la columna está en modo ajustado, convertir a nominal antes de guardar
+        if (field !== "infl" && adjustedCols.has(field) && factor > 0) {
+          val = val / factor;
+        }
+        if (field === "infl") row.infl = val;
+        else if (field === "otros") {
+          row.otrosList = val > 0 ? [{ concepto: "Otros", monto: Math.round(val) }] : [];
+        } else {
+          row[field] = Math.round(val);
+        }
+
+        if (["hab","caja","prod","hs","agui","otros"].includes(field)) {
+          row.total = row.hab + row.caja + row.prod + row.hs + row.agui + otrosSum(row);
+        }
+
+        saveData();
+        const nextField = moveNext ? FIELD_ORDER[FIELD_ORDER.indexOf(field) + 1] : null;
+        render();
+
+        if (nextField) {
+          setTimeout(() => {
+            const nextTd = document.querySelector(`td.editable[data-idx="${idx}"][data-field="${nextField}"]`);
+            if (nextTd) startCellEdit(nextTd);
+          }, 40);
+        }
+      };
+
+      input.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === "Tab") {
+          ev.preventDefault();
+          commit(true);
+        } else if (ev.key === "Escape") {
+          ev.preventDefault();
+          render();
+        }
+      });
+
+      input.addEventListener("blur", () => {
+        if (td.contains(input)) commit(false);
+      });
+    }
+
+    function showForm() { document.getElementById("formCard").classList.add("visible"); }
+    function hideForm() {
+      document.getElementById("formCard").classList.remove("visible");
+      editIndex = -1;
+      document.getElementById("formTitle").textContent = "Agregar mes";
+      document.getElementById("formMsg").textContent = "";
+      document.getElementById("btnDeleteMonth").style.display = "none";
+      clearOtrosList();
+      ["fMes","fHab","fCaja","fProd","fHs","fAgui","fTotal","fInfl"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+    }
+
+    function clearOtrosList() { document.getElementById("otrosList").innerHTML = ""; }
+
+    function addOtroRow(concepto = "", monto = "") {
+      const div = document.createElement("div");
+      div.className = "otros-row";
+      div.innerHTML = `
+        <input class="concepto" type="text" placeholder="Concepto" />
+        <input type="number" placeholder="Monto" step="1" min="0" />
+        <button type="button" class="del" title="Quitar">×</button>
+      `;
+      div.querySelector(".concepto").value = concepto;
+      div.querySelector("input[type=number]").value = monto;
+      div.querySelector(".del").onclick = () => div.remove();
+      document.getElementById("otrosList").appendChild(div);
+    }
+
+    function openForm(idx) {
+      editIndex = idx;
+      const row = data[idx];
+      document.getElementById("formTitle").textContent = "Editando: " + row.mes;
+      document.getElementById("btnDeleteMonth").style.display = "";
+      document.getElementById("fMes").value = row.mes;
+      document.getElementById("fHab").value = row.hab || "";
+      document.getElementById("fCaja").value = row.caja || "";
+      document.getElementById("fProd").value = row.prod || "";
+      document.getElementById("fHs").value = row.hs || "";
+      document.getElementById("fAgui").value = row.agui || "";
+      document.getElementById("fTotal").value = row.total || "";
+      document.getElementById("fInfl").value = row.infl || "";
+      clearOtrosList();
+      (row.otrosList || []).forEach(o => addOtroRow(o.concepto, o.monto));
+      if (!(row.otrosList || []).length) addOtroRow();
+      showForm();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("btnEditToggle").addEventListener("click", () => setEditMode(!editMode));
+
+    document.getElementById("btnSaveAll").addEventListener("click", () => {
+      saveData(true);
+    });
+
+    document.getElementById("btnShowForm").addEventListener("click", () => {
+      if (document.getElementById("formCard").classList.contains("visible")) {
+        hideForm();
+      } else {
+        editIndex = -1;
+        document.getElementById("formTitle").textContent = "Agregar mes";
+        document.getElementById("btnDeleteMonth").style.display = "none";
+        clearOtrosList();
+        addOtroRow();
+        showForm();
+      }
+    });
+
+    document.getElementById("btnAddOtro").addEventListener("click", () => addOtroRow());
+    document.getElementById("btnCancel").addEventListener("click", hideForm);
+    document.getElementById("btnDeleteMonth").addEventListener("click", () => {
+      if (editIndex < 0) return;
+      deleteMonth(editIndex);
+    });
+
+    document.getElementById("btnCalcTotal").addEventListener("click", () => {
+      const hab = Number(document.getElementById("fHab").value) || 0;
+      const caja = Number(document.getElementById("fCaja").value) || 0;
+      const prod = Number(document.getElementById("fProd").value) || 0;
+      const hs = Number(document.getElementById("fHs").value) || 0;
+      const agui = Number(document.getElementById("fAgui").value) || 0;
+      let otros = 0;
+      document.querySelectorAll("#otrosList .otros-row").forEach(r => {
+        otros += Number(r.querySelector("input[type=number]").value) || 0;
+      });
+      const t = hab + caja + prod + hs + agui + otros;
+      document.getElementById("fTotal").value = t;
+      document.getElementById("formMsg").textContent = "Total: " + fmt(t);
+    });
+
+    document.getElementById("btnSave").addEventListener("click", () => {
+      const mes = document.getElementById("fMes").value.trim();
+      if (!mes) {
+        document.getElementById("formMsg").textContent = "Falta el mes";
+        return;
+      }
+      const hab = Number(document.getElementById("fHab").value) || 0;
+      const caja = Number(document.getElementById("fCaja").value) || 0;
+      const prod = Number(document.getElementById("fProd").value) || 0;
+      const hs = Number(document.getElementById("fHs").value) || 0;
+      const agui = Number(document.getElementById("fAgui").value) || 0;
+      const infl = Number(document.getElementById("fInfl").value) || 0;
+
+      const otrosList = [];
+      document.querySelectorAll("#otrosList .otros-row").forEach(r => {
+        const concepto = r.querySelector(".concepto").value.trim() || "Otros";
+        const monto = Number(r.querySelector("input[type=number]").value) || 0;
+        if (monto > 0) otrosList.push({ concepto, monto });
+      });
+
+      let total = Number(document.getElementById("fTotal").value) || 0;
+      const sum = hab + caja + prod + hs + agui + otrosList.reduce((s,o) => s + o.monto, 0);
+      if (!total) total = sum;
+
+      const obj = { mes, hab, caja, prod, hs, agui, otrosList, total, infl };
+
+      if (editIndex >= 0) data[editIndex] = obj;
+      else data.push(obj);
+
+      sortData();
+      saveData(true);
+      hideForm();
+      render();
+    });
+
+    document.getElementById("yearFilter").addEventListener("change", e => {
+      currentYear = e.target.value;
+      render();
+    });
+
+    // --- Exportar / Importar JSON ---
+    document.getElementById("btnExport").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "haberes_datos.json";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+
+    function normalizeRow(r) {
+      if (Array.isArray(r)) return r[0] ? toObj(r) : null; // formato ["enero 16", hab, caja, ...]
+      if (!r || typeof r !== "object" || !r.mes) return null;
+      const num = v => { const n = Number(v); return isNaN(n) ? 0 : n; };
+      let otrosList = [];
+      if (Array.isArray(r.otrosList)) {
+        otrosList = r.otrosList
+          .map(o => ({ concepto: String((o && o.concepto) || "Otros"), monto: num(o && o.monto) }))
+          .filter(o => o.monto > 0);
+      } else if (num(r.otros) > 0) {
+        otrosList = [{ concepto: "Otros", monto: num(r.otros) }];
+      }
+      const row = {
+        mes: String(r.mes).trim(),
+        hab: num(r.hab), caja: num(r.caja), prod: num(r.prod), hs: num(r.hs), agui: num(r.agui),
+        otrosList, total: num(r.total), infl: num(r.infl)
+      };
+      if (!row.total) row.total = row.hab + row.caja + row.prod + row.hs + row.agui + otrosSum(row);
+      return row;
+    }
+
+    document.getElementById("btnImport").addEventListener("click", () => {
+      document.getElementById("fileImport").click();
+    });
+
+    document.getElementById("fileImport").addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        let parsed;
+        try { parsed = JSON.parse(reader.result); }
+        catch (err) { alert("El archivo no es un JSON válido."); return; }
+
+        const arr = Array.isArray(parsed) ? parsed
+          : (parsed && Array.isArray(parsed.data) ? parsed.data : null);
+        if (!arr) { alert("No encontré una lista de meses en el archivo."); return; }
+
+        const rows = arr.map(normalizeRow).filter(Boolean);
+        const skipped = arr.length - rows.length;
+        if (!rows.length) {
+          alert("El archivo no tiene meses válidos (cada mes necesita el campo «mes»).");
+          return;
+        }
+
+        let replace = true;
+        if (data.length) {
+          replace = confirm(
+            "Se encontraron " + rows.length + " meses en «" + file.name + "».\n\n" +
+            "Aceptar → REEMPLAZAR todos los datos actuales.\n" +
+            "Cancelar → COMBINAR (actualiza los meses con el mismo nombre y agrega los nuevos)."
+          );
+        }
+
+        if (replace) {
+          data = rows;
+        } else {
+          rows.forEach(r => {
+            const key = r.mes.toLowerCase().trim();
+            const i = data.findIndex(d => String(d.mes).toLowerCase().trim() === key);
+            if (i >= 0) data[i] = r; else data.push(r);
+          });
+        }
+        sortData();
+        saveData(true);
+        hideForm();
+        render();
+        redrawVisibleCharts();
+        alert((replace ? "Reemplazados" : "Combinados") + ": " + rows.length + " meses" +
+          (skipped ? " (" + skipped + " filas ignoradas por no tener «mes»)" : "") + ".");
+      };
+      reader.onerror = () => alert("No se pudo leer el archivo.");
+      reader.readAsText(file);
+    });
+
+
+    // --- Comparador de dos meses ---
+    function fillCompareSelects() {
+      const selA = document.getElementById("cmpA");
+      const selB = document.getElementById("cmpB");
+      if (!selA || !selB) return;
+      const currentA = selA.value;
+      const currentB = selB.value;
+      selA.innerHTML = "";
+      selB.innerHTML = "";
+      data.forEach((row, idx) => {
+        const o1 = document.createElement("option");
+        o1.value = idx; o1.textContent = row.mes;
+        selA.appendChild(o1);
+        const o2 = document.createElement("option");
+        o2.value = idx; o2.textContent = row.mes;
+        selB.appendChild(o2);
+      });
+      if (data.length > 0) {
+        selA.value = currentA !== "" && Number(currentA) < data.length ? currentA : 0;
+        selB.value = currentB !== "" && Number(currentB) < data.length ? currentB : data.length - 1;
+      }
+    }
+
+    function runCompare() {
+      const idxA = Number(document.getElementById("cmpA").value);
+      const idxB = Number(document.getElementById("cmpB").value);
+      if (isNaN(idxA) || isNaN(idxB) || !data[idxA] || !data[idxB]) return;
+
+      const factors = buildFactors();
+      const rowA = data[idxA];
+      const rowB = data[idxB];
+
+      function vals(row, f) {
+        const sel = getSelectedConcepts();
+        const v = {
+          hab: (row.hab || 0) * f, caja: (row.caja || 0) * f, prod: (row.prod || 0) * f,
+          hs: (row.hs || 0) * f, agui: (row.agui || 0) * f, otros: otrosSum(row) * f
+        };
+        v.total = ["hab","caja","prod","hs","agui","otros"].reduce((s, k) => s + (sel.has(k) ? v[k] : 0), 0);
+        return v;
+      }
+
+      const a = vals(rowA, factors[idxA]);
+      const b = vals(rowB, factors[idxB]);
+
+      const tbody = document.getElementById("cmpBody");
+      tbody.innerHTML = "";
+
+      function rowHtml(mes, v, cls) {
+        return `
+          <td class="${cls}">${mes} (a hoy)</td>
+          <td class="num">${fmt(v.hab)}</td>
+          <td class="num">${fmt(v.caja)}</td>
+          <td class="num">${fmt(v.prod)}</td>
+          <td class="num">${fmt(v.hs)}</td>
+          <td class="num">${fmt(v.agui)}</td>
+          <td class="num">${fmt(v.otros)}</td>
+          <td class="num" style="font-weight:700">${fmt(v.total)}</td>
+        `;
+      }
+      const trA = document.createElement("tr");
+      trA.innerHTML = rowHtml(rowA.mes, a, "hl-a");
+      tbody.appendChild(trA);
+      const trB = document.createElement("tr");
+      trB.innerHTML = rowHtml(rowB.mes, b, "hl-b");
+      tbody.appendChild(trB);
+
+      function pct(diff, base) {
+        if (base === 0) return base === diff ? "0,0%" : (diff > 0 ? "+∞" : "—");
+        const p = (diff / base) * 100;
+        return (p >= 0 ? "+" : "") + p.toFixed(1).replace(".", ",") + "%";
+      }
+      function cell(diff, base) {
+        const cls = diff > 0.5 ? "pos" : (diff < -0.5 ? "neg" : "");
+        return `<td class="num ${cls}">${diff >= 0 ? "+" : ""}${fmt(diff)}<br><small>${pct(diff, base)}</small></td>`;
+      }
+
+      const dTotal = b.total - a.total;
+      const trD = document.createElement("tr");
+      trD.className = "total-row";
+      trD.innerHTML = `
+        <td>Diferencia (B − A)</td>
+        ${cell(b.hab - a.hab, a.hab)}
+        ${cell(b.caja - a.caja, a.caja)}
+        ${cell(b.prod - a.prod, a.prod)}
+        ${cell(b.hs - a.hs, a.hs)}
+        ${cell(b.agui - a.agui, a.agui)}
+        ${cell(b.otros - a.otros, a.otros)}
+        ${cell(dTotal, a.total)}
+      `;
+      tbody.appendChild(trD);
+
+      const diffBox = document.getElementById("diffBox");
+      const pctT = a.total !== 0 ? (dTotal / a.total) * 100 : 0;
+      diffBox.className = "compare-diff" + (dTotal < 0 ? " neg" : "");
+      const sign = dTotal >= 0 ? "+" : "";
+      diffBox.innerHTML = `Diferencia total en poder adquisitivo: <strong>${sign}${fmt(dTotal)}</strong> (${sign}${pctT.toFixed(1).replace(".", ",")}%)`;
+
+      document.getElementById("compareResult").style.display = "block";
+      applyConceptVisibility();
+    }
+
+    document.getElementById("btnCompare").addEventListener("click", runCompare);
+
+    document.getElementById("conceptFilters").addEventListener("change", () => {
+      applyConceptVisibility();
+      if (document.getElementById("chartCard").style.display !== "none") drawChart();
+      if (document.getElementById("compareResult").style.display !== "none") runCompare();
+      render();
+    });
+
+    document.querySelector(".table-card thead").addEventListener("dblclick", (e) => {
+      const th = e.target.closest("th.col-toggle");
+      if (!th) return;
+      const field = th.dataset.field;
+      if (adjustedCols.has(field)) adjustedCols.delete(field);
+      else adjustedCols.add(field);
+      render();
+    });
+
+    document.getElementById("monthFilter").addEventListener("change", e => {
+      currentMonth = e.target.value;
+      render();
+    });
+
+    // Secciones plegables
+    function makeCollapsible(toggleId, bodyId, chevId, onOpen) {
+      const body = document.getElementById(bodyId);
+      const chev = document.getElementById(chevId);
+      let open = false;
+      document.getElementById(toggleId).addEventListener("click", (e) => {
+        if (e.target.closest("select, button, input")) return;
+        open = !open;
+        body.style.display = open ? "block" : "none";
+        chev.textContent = open ? "▼" : "▶";
+        if (open && onOpen) onOpen();
+      });
+    }
+    makeCollapsible("compareToggle", "compareBody", "compareChevron");
+    makeCollapsible("convertToggle", "convertBody", "convertChevron");
+    makeCollapsible("avgToggle", "avgBody", "avgChevron", () => runAverage());
+
+    // Gráfico principal
+    document.getElementById("btnChart").addEventListener("click", () => {
+      const card = document.getElementById("chartCard");
+      card.style.display = "block";
+      drawChart();
+      card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    document.getElementById("btnRefreshChart").addEventListener("click", drawChart);
+    document.getElementById("btnCloseChart").addEventListener("click", () => {
+      document.getElementById("chartCard").style.display = "none";
+    });
+
+    function lineChartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: true, labels: { color: chartTextColor(), font: { size: 12 } } },
+          tooltip: { callbacks: { label: (ctx) => "$ " + Number(ctx.raw).toLocaleString("es-AR") } }
+        },
+        scales: {
+          x: {
+            ticks: { color: chartTextColor(), maxRotation: 55, font: { size: 10 }, autoSkip: true, maxTicksLimit: 24 },
+            grid: { color: chartGridColor() }
+          },
+          y: {
+            ticks: { color: chartTextColor(), callback: moneyTick },
+            grid: { color: chartGridColor() }
+          }
+        }
+      };
+    }
+
+    function drawChart() {
+      const factors = buildFactors();
+      const labels = [];
+      const values = [];
+      data.forEach((row, idx) => {
+        const parts = row.mes.toLowerCase().split(" ");
+        const monthName = parts[0];
+        const year = parts[parts.length - 1];
+        if (currentYear !== "all" && year !== currentYear) return;
+        if (currentMonth !== "all" && monthName !== currentMonth) return;
+        labels.push(row.mes);
+        values.push(Math.round(selectedTotal(row) * factors[idx]));
+      });
+
+      const ctx = document.getElementById("chartCanvas").getContext("2d");
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Total ajustado",
+            data: values,
+            borderColor: chartRgba("--chart-line", 1),
+            backgroundColor: chartRgba("--chart-line", 0.14),
+            borderWidth: 2.5,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            pointBackgroundColor: chartRgba("--chart-line", 1),
+            fill: true,
+            tension: 0.28,
+          }]
+        },
+        options: lineChartOptions()
+      });
+    }
+
+    // --- Convertir entre dos fechas ---
+    function fillConvertSelects() {
+      const selF = document.getElementById("convFrom");
+      const selT = document.getElementById("convTo");
+      if (!selF || !selT) return;
+      const curF = selF.value, curT = selT.value;
+      selF.innerHTML = "";
+      selT.innerHTML = "";
+      data.forEach((row, idx) => {
+        const o1 = document.createElement("option");
+        o1.value = idx; o1.textContent = row.mes;
+        selF.appendChild(o1);
+        const o2 = document.createElement("option");
+        o2.value = idx; o2.textContent = row.mes;
+        selT.appendChild(o2);
+      });
+      if (data.length) {
+        selF.value = curF !== "" && Number(curF) < data.length ? curF : data.length - 1;
+        selT.value = curT !== "" && Number(curT) < data.length ? curT : 0;
+      }
+    }
+
+    function factorBetween(fromIdx, toIdx) {
+      if (fromIdx === toIdx) return 1;
+      let factor = 1;
+      if (toIdx > fromIdx) {
+        for (let i = fromIdx + 1; i <= toIdx; i++) factor *= (1 + (data[i].infl || 0) / 100);
+      } else {
+        for (let i = toIdx + 1; i <= fromIdx; i++) factor /= (1 + (data[i].infl || 0) / 100);
+      }
+      return factor;
+    }
+
+    function runConvert() {
+      const fromIdx = Number(document.getElementById("convFrom").value);
+      const toIdx = Number(document.getElementById("convTo").value);
+      if (isNaN(fromIdx) || isNaN(toIdx) || !data[fromIdx] || !data[toIdx]) return;
+
+      const row = data[fromIdx];
+      const f = factorBetween(fromIdx, toIdx);
+      const sel = getSelectedConcepts();
+
+      document.getElementById("convThFrom").textContent = "En " + row.mes;
+      document.getElementById("convThTo").textContent = "En " + data[toIdx].mes;
+
+      const conceptos = [
+        { key: "hab", label: "Haberes" },
+        { key: "caja", label: "Caja de empleados" },
+        { key: "prod", label: "Productividad" },
+        { key: "hs", label: "Horas extra" },
+        { key: "agui", label: "Aguinaldo" },
+        { key: "otros", label: "Otros ingresos", isOtros: true },
+      ];
+
+      const tbody = document.getElementById("convBody");
+      tbody.innerHTML = "";
+      let sumFrom = 0, sumTo = 0;
+
+      conceptos.forEach(c => {
+        if (!sel.has(c.key)) return;
+        const nom = c.isOtros ? otrosSum(row) : (row[c.key] || 0);
+        const dest = nom * f;
+        sumFrom += nom;
+        sumTo += dest;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${c.label}</td>
+          <td class="num">${fmt(nom)}</td>
+          <td class="num pos">${fmt(dest)}</td>
+          <td class="num">${f.toFixed(4)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const trT = document.createElement("tr");
+      trT.className = "total-row";
+      trT.innerHTML = `
+        <td>TOTAL</td>
+        <td class="num">${fmt(sumFrom)}</td>
+        <td class="num">${fmt(sumTo)}</td>
+        <td class="num">${f.toFixed(4)}</td>
+      `;
+      tbody.appendChild(trT);
+
+      const dir = toIdx >= fromIdx ? "adelante (inflación acumulada)" : "atrás (deflación)";
+      document.getElementById("convertNote").textContent =
+        `Factor ${f.toFixed(4)} · conversión ${dir} entre ${row.mes} y ${data[toIdx].mes}`;
+
+      document.getElementById("convertResult").style.display = "block";
+    }
+
+    document.getElementById("btnConvert").addEventListener("click", runConvert);
+
+    // --- Promedio móvil N meses (ajustado) ---
+    function getAvgWindow() {
+      const el = document.getElementById("avgWindow");
+      let w = el ? parseInt(el.value, 10) : 12;
+      if (isNaN(w) || w < 2) w = 2;
+      if (w > 120) w = 120;
+      if (el) el.value = w;
+      return w;
+    }
+
+    function runAverage() {
+      const factors = buildFactors();
+      const n = data.length;
+      const tbody = document.getElementById("avgBodyRows");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      const windowSize = getAvgWindow();
+      const hint = document.getElementById("avgWindowHint");
+      const seriesBox = document.getElementById("seriesGrandAvg");
+
+      if (n === 0) {
+        if (hint) hint.textContent = "Sin datos";
+        if (seriesBox) seriesBox.innerHTML = "Sin datos para promediar.";
+        drawAvgChart([], [], windowSize);
+        return;
+      }
+
+      const firstIdx = windowSize - 1;
+      if (n < windowSize) {
+        if (hint) hint.textContent = `Hacen falta al menos ${windowSize} meses (hay ${n}).`;
+        drawAvgChart([], [], windowSize);
+      } else {
+        if (hint) hint.textContent = `Ventana ${windowSize} · desde ${data[firstIdx].mes} (${n - firstIdx} puntos)`;
+
+        const keys = ["hab", "caja", "prod", "hs", "agui", "otros"];
+        const labels = [];
+        const totalAvgs = [];
+
+        for (let i = firstIdx; i < n; i++) {
+          const from = i - windowSize + 1;
+          const sums = { hab: 0, caja: 0, prod: 0, hs: 0, agui: 0, otros: 0, total: 0 };
+          for (let j = from; j <= i; j++) {
+            const f = factors[j];
+            const row = data[j];
+            keys.forEach(k => {
+              sums[k] += (k === "otros" ? otrosSum(row) : (row[k] || 0)) * f;
+            });
+            sums.total += selectedTotal(row) * f;
+          }
+          const avgs = {};
+          keys.forEach(k => { avgs[k] = sums[k] / windowSize; });
+          const avgTotal = sums.total / windowSize;
+
+          labels.push(data[i].mes);
+          totalAvgs.push(Math.round(avgTotal));
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td style="font-weight:600">${data[i].mes}<br><small class="sub">${windowSize} meses</small></td>
+            <td class="num avg-col" data-concept="hab">${fmt(avgs.hab)}</td>
+            <td class="num avg-col" data-concept="caja">${fmt(avgs.caja)}</td>
+            <td class="num avg-col" data-concept="prod">${fmt(avgs.prod)}</td>
+            <td class="num avg-col" data-concept="hs">${fmt(avgs.hs)}</td>
+            <td class="num avg-col" data-concept="agui">${fmt(avgs.agui)}</td>
+            <td class="num avg-col" data-concept="otros">${fmt(avgs.otros)}</td>
+            <td class="num hl-aj">${fmt(avgTotal)}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+        applyAvgConceptVisibility();
+        drawAvgChart(labels, totalAvgs, windowSize);
+      }
+
+      if (seriesBox) {
+        let sumAll = 0;
+        for (let i = 0; i < n; i++) sumAll += selectedTotal(data[i]) * factors[i];
+        seriesBox.innerHTML = `
+          Promedio total de <strong>todos los meses</strong> de la serie<br>
+          <span style="font-size:0.8rem;opacity:0.85">${n} meses · items filtrados · valores a hoy</span><br>
+          <strong style="font-size:1.25rem">${fmt(sumAll / n)}</strong>
+        `;
+      }
+    }
+
+    function applyAvgConceptVisibility() {
+      const sel = getSelectedConcepts();
+      document.querySelectorAll("#avgTable .avg-col").forEach(el => {
+        el.style.display = sel.has(el.dataset.concept) ? "" : "none";
+      });
+    }
+
+    function drawAvgChart(labels, values, windowSize) {
+      const canvas = document.getElementById("avgChartCanvas");
+      if (!canvas) return;
+      if (avgChartInstance) {
+        avgChartInstance.destroy();
+        avgChartInstance = null;
+      }
+      if (!labels.length) return;
+      // Evitar dibujar si la sección está plegada (canvas sin tamaño)
+      if (document.getElementById("avgBody").style.display === "none") return;
+
+      const w = windowSize || getAvgWindow();
+      avgChartInstance = new Chart(canvas.getContext("2d"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: `Promedio móvil ${w}m (ajustado)`,
+            data: values,
+            borderColor: chartRgba("--chart-line-2", 1),
+            backgroundColor: chartRgba("--chart-line-2", 0.14),
+            borderWidth: 2.5,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            pointBackgroundColor: chartRgba("--chart-line-2", 1),
+            fill: true,
+            tension: 0.28,
+          }]
+        },
+        options: lineChartOptions()
+      });
+    }
+
+    document.getElementById("btnAvgWindow").addEventListener("click", runAverage);
+    document.getElementById("avgWindow").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        runAverage();
+      }
+    });
+
+    // --- Vistas: planilla / gráficos ---
+    let monthAvgChartInstance = null;
+    let yearAvgChartInstance = null;
+    let itemShareChartInstance = null;
+
+    function showView(name) {
+      const isG = name === "graficos";
+      document.getElementById("viewPlanilla").style.display = isG ? "none" : "block";
+      document.getElementById("viewGraficos").style.display = isG ? "block" : "none";
+      document.getElementById("btnViewPlanilla").classList.toggle("active", !isG);
+      document.getElementById("btnViewGraficos").classList.toggle("active", isG);
+      if (isG) {
+        renderMonthAvgChart();
+        renderYearAvgChart();
+        renderItemShareChart();
+      }
+    }
+
+    function getGSelectedConcepts() {
+      const set = new Set();
+      document.querySelectorAll("#gConceptFilters input[data-concept]").forEach(cb => {
+        if (cb.checked) set.add(cb.dataset.concept);
+      });
+      return set;
+    }
+
+    function gSelectedTotal(row) {
+      const sel = getGSelectedConcepts();
+      let s = 0;
+      ["hab","caja","prod","hs","agui","otros"].forEach(k => {
+        if (sel.has(k)) s += conceptValue(row, k);
+      });
+      return s;
+    }
+
+    function isGAdjustedMode() {
+      const r = document.querySelector('input[name="gValMode"]:checked');
+      return !r || r.value === "aj";
+    }
+
+    function barChartOptions(fontX) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, labels: { color: chartTextColor(), font: { size: 11 } } },
+          tooltip: { callbacks: { label: (c) => "$ " + Number(c.raw).toLocaleString("es-AR") } }
+        },
+        scales: {
+          x: { ticks: { color: chartTextColor(), font: { size: fontX || 11 } }, grid: { color: chartGridColor() } },
+          y: { ticks: { color: chartTextColor(), callback: moneyTick }, grid: { color: chartGridColor() } }
+        }
+      };
+    }
+
+    function renderMonthAvgChart() {
+      const factors = buildFactors();
+      const useAdj = isGAdjustedMode();
+      const buckets = {};
+      MONTH_ORDER.forEach(m => { buckets[m] = []; });
+
+      data.forEach((row, idx) => {
+        const m = String(row.mes || "").toLowerCase().trim().split(/\s+/)[0];
+        if (!buckets[m]) return;
+        const nom = gSelectedTotal(row);
+        buckets[m].push(useAdj ? nom * factors[idx] : nom);
+      });
+
+      const tbody = document.getElementById("monthAvgBody");
+      tbody.innerHTML = "";
+      const labels = [];
+      const values = [];
+      let bestIdx = -1;
+      let bestVal = -Infinity;
+
+      MONTH_ORDER.forEach((m, i) => {
+        const vals = buckets[m];
+        const label = MONTH_LABELS[i];
+        const tr = document.createElement("tr");
+        if (!vals.length) {
+          tr.innerHTML = `<td>${label}</td><td class="num">—</td><td class="num">0</td><td class="num">—</td><td class="num">—</td>`;
+          tbody.appendChild(tr);
+          return;
+        }
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        labels.push(label);
+        values.push(Math.round(avg));
+        if (avg > bestVal) { bestVal = avg; bestIdx = tbody.children.length; }
+        tr.innerHTML = `<td>${label}</td><td class="num">${fmt(avg)}</td><td class="num">${vals.length}</td><td class="num">${fmt(Math.min(...vals))}</td><td class="num">${fmt(Math.max(...vals))}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      if (bestIdx >= 0 && tbody.children[bestIdx]) tbody.children[bestIdx].classList.add("total-row");
+
+      const grandBox = document.getElementById("monthGrandAvg");
+      if (!data.length) {
+        grandBox.innerHTML = "Sin datos para promediar.";
+      } else {
+        let grandSum = 0;
+        data.forEach((row, idx) => {
+          const nom = gSelectedTotal(row);
+          grandSum += useAdj ? nom * factors[idx] : nom;
+        });
+        grandBox.innerHTML = `
+          Promedio total de <strong>todos los meses</strong> de la serie<br>
+          <span style="font-size:0.8rem;opacity:0.85">${data.length} meses · items filtrados · ${useAdj ? "ajustados a hoy" : "nominales"}</span><br>
+          <strong>${fmt(grandSum / data.length)}</strong>
+        `;
+      }
+
+      const canvas = document.getElementById("monthAvgChart");
+      if (monthAvgChartInstance) { monthAvgChartInstance.destroy(); monthAvgChartInstance = null; }
+      if (!labels.length) return;
+
+      monthAvgChartInstance = new Chart(canvas.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: `Promedio por mes (${useAdj ? "ajustado a hoy" : "nominal"})`,
+            data: values,
+            backgroundColor: chartRgba("--chart-line", 0.7),
+            borderColor: chartRgba("--chart-line", 1),
+            borderWidth: 1,
+            borderRadius: 6,
+            maxBarThickness: 48,
+          }]
+        },
+        options: barChartOptions(11)
+      });
+    }
+
+    function yearLabel(y) {
+      const s = String(y);
+      return s.length <= 2 ? "20" + s.padStart(2, "0") : s;
+    }
+    function yearNum(y) { return parseInt(y.length <= 2 ? "20" + y : y, 10); }
+
+    function renderYearAvgChart() {
+      const factors = buildFactors();
+      const useAdj = isGAdjustedMode();
+      const byYear = {};
+
+      data.forEach((row, idx) => {
+        const parts = String(row.mes || "").trim().split(/\s+/);
+        const y = parts[parts.length - 1] || "";
+        if (!y) return;
+        if (!byYear[y]) byYear[y] = [];
+        const nom = gSelectedTotal(row);
+        byYear[y].push(useAdj ? nom * factors[idx] : nom);
+      });
+
+      const years = Object.keys(byYear).sort((a, b) => yearNum(a) - yearNum(b));
+
+      const tbody = document.getElementById("yearAvgBody");
+      tbody.innerHTML = "";
+      const labels = [];
+      const values = [];
+      let bestIdx = -1;
+      let bestVal = -Infinity;
+
+      years.forEach((y) => {
+        const vals = byYear[y];
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        const lab = yearLabel(y);
+        labels.push(lab);
+        values.push(Math.round(avg));
+        if (avg > bestVal) { bestVal = avg; bestIdx = tbody.children.length; }
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${lab}</td><td class="num">${fmt(avg)}</td><td class="num">${vals.length}</td><td class="num">${fmt(Math.min(...vals))}</td><td class="num">${fmt(Math.max(...vals))}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      if (bestIdx >= 0 && tbody.children[bestIdx]) tbody.children[bestIdx].classList.add("total-row");
+
+      const canvas = document.getElementById("yearAvgChart");
+      if (yearAvgChartInstance) { yearAvgChartInstance.destroy(); yearAvgChartInstance = null; }
+      if (!labels.length) return;
+
+      yearAvgChartInstance = new Chart(canvas.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: `Promedio mensual por año (${useAdj ? "ajustado a hoy" : "nominal"})`,
+            data: values,
+            backgroundColor: chartRgba("--chart-line-2", 0.7),
+            borderColor: chartRgba("--chart-line-2", 1),
+            borderWidth: 1,
+            borderRadius: 6,
+            maxBarThickness: 42,
+          }]
+        },
+        options: barChartOptions(10)
+      });
+    }
+
+    function fillShareYearSelect() {
+      const sel = document.getElementById("shareYear");
+      const prev = sel.value;
+      const years = [...new Set(data.map(r => {
+        const p = String(r.mes || "").trim().split(/\s+/);
+        return p[p.length - 1] || "";
+      }).filter(Boolean))].sort((a, b) => yearNum(a) - yearNum(b));
+      sel.innerHTML = "";
+      years.forEach(y => {
+        const o = document.createElement("option");
+        o.value = y;
+        o.textContent = yearLabel(y);
+        sel.appendChild(o);
+      });
+      if (years.includes(prev)) sel.value = prev;
+      else if (years.length) sel.value = years[years.length - 1];
+    }
+
+    function updateShareScopeUI() {
+      const scope = document.getElementById("shareScope").value || "all";
+      document.getElementById("shareYearWrap").style.display = scope === "year" ? "" : "none";
+      document.getElementById("shareMonthWrap").style.display = scope === "month" ? "" : "none";
+      if (scope === "year") fillShareYearSelect();
+    }
+
+    function getShareFilteredIndices() {
+      const scope = document.getElementById("shareScope").value || "all";
+      const indices = [];
+      data.forEach((row, idx) => {
+        const parts = String(row.mes || "").toLowerCase().trim().split(/\s+/);
+        const monthName = parts[0] || "";
+        const year = parts[parts.length - 1] || "";
+        if (scope === "year" && year !== document.getElementById("shareYear").value) return;
+        if (scope === "month" && monthName !== document.getElementById("shareMonth").value) return;
+        indices.push(idx);
+      });
+      return indices;
+    }
+
+    function renderItemShareChart() {
+      updateShareScopeUI();
+      const factors = buildFactors();
+      const useAdj = isGAdjustedMode();
+      const sel = getGSelectedConcepts();
+      const items = [
+        { key: "hab", label: "Haberes", color: chartRgba("--chart-line", 0.85) },
+        { key: "caja", label: "Caja", color: chartRgba("--chart-line-2", 0.85) },
+        { key: "prod", label: "Productividad", color: "rgba(232, 196, 140, 0.9)" },
+        { key: "hs", label: "Hs extra", color: "rgba(168, 204, 160, 0.9)" },
+        { key: "agui", label: "Aguinaldo", color: "rgba(226, 170, 170, 0.9)" },
+        { key: "otros", label: "Otros", color: "rgba(176, 186, 196, 0.9)" },
+      ].filter(it => sel.has(it.key));
+
+      const indices = getShareFilteredIndices();
+      const n = indices.length;
+      const avgs = {};
+      items.forEach(it => { avgs[it.key] = 0; });
+      indices.forEach(idx => {
+        const row = data[idx];
+        const f = useAdj ? (factors[idx] || 1) : 1;
+        items.forEach(it => { avgs[it.key] += conceptValue(row, it.key) * f; });
+      });
+      items.forEach(it => { avgs[it.key] = n ? avgs[it.key] / n : 0; });
+      const grand = items.reduce((s, it) => s + avgs[it.key], 0);
+
+      const scope = document.getElementById("shareScope").value || "all";
+      let scopeTxt = "toda la serie";
+      if (scope === "year") scopeTxt = "año " + yearLabel(document.getElementById("shareYear").value || "");
+      else if (scope === "month") scopeTxt = "mes " + document.getElementById("shareMonth").value;
+      document.getElementById("shareScopeHint").textContent =
+        n ? (n + " mes" + (n === 1 ? "" : "es") + " en el promedio") : "Sin datos en este período";
+
+      const tbody = document.getElementById("itemShareBody");
+      tbody.innerHTML = "";
+      const labels = [], values = [], colors = [];
+
+      items.forEach(it => {
+        const amt = avgs[it.key];
+        const pct = grand > 0 ? (amt / grand) * 100 : 0;
+        labels.push(it.label);
+        values.push(Math.round(amt));
+        colors.push(it.color);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${it.label}</td><td class="num">${fmt(amt)}</td><td class="num">${pct.toFixed(1).replace(".", ",")}%</td>`;
+        tbody.appendChild(tr);
+      });
+
+      if (items.length && n) {
+        const trT = document.createElement("tr");
+        trT.className = "total-row";
+        trT.innerHTML = `<td>PROMEDIO TOTAL</td><td class="num">${fmt(grand)}</td><td class="num">100%</td>`;
+        tbody.appendChild(trT);
+      }
+
+      const canvas = document.getElementById("itemShareChart");
+      if (itemShareChartInstance) { itemShareChartInstance.destroy(); itemShareChartInstance = null; }
+      if (!labels.length || grand <= 0 || !n) return;
+
+      itemShareChartInstance = new Chart(canvas.getContext("2d"), {
+        type: "doughnut",
+        data: {
+          labels,
+          datasets: [{
+            label: "Participación del promedio",
+            data: values,
+            backgroundColor: colors,
+            borderColor: cssVar("--surface") || "#fbfaf7",
+            borderWidth: 2,
+            hoverOffset: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "58%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: { color: chartTextColor(), font: { size: 11 }, boxWidth: 12 }
+            },
+            tooltip: {
+              callbacks: {
+                label: (c) => {
+                  const v = Number(c.raw) || 0;
+                  const p = grand > 0 ? (v / grand) * 100 : 0;
+                  return " " + c.label + ": " + p.toFixed(1).replace(".", ",") + "% · prom. $ " + v.toLocaleString("es-AR");
+                }
+              }
+            },
+            title: {
+              display: true,
+              text: "Promedio (" + (useAdj ? "ajustado" : "nominal") + " · " + scopeTxt + ")",
+              color: cssVar("--heading") || "#5a5170",
+              font: { size: 12, weight: "600" }
+            }
+          }
+        }
+      });
+    }
+
+    document.getElementById("btnViewPlanilla").addEventListener("click", () => showView("planilla"));
+    document.getElementById("btnViewGraficos").addEventListener("click", () => showView("graficos"));
+    document.getElementById("btnThemeToggle").addEventListener("click", () => {
+      const cur = document.documentElement.getAttribute("data-theme") || "suave";
+      const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+      // Al cambiar de tema base se limpia la paleta personalizada
+      applyTheme(next, false);
+    });
+
+
+    function refreshDashboard() {
+      if (document.getElementById("viewGraficos").style.display !== "none") {
+        renderMonthAvgChart();
+        renderYearAvgChart();
+        renderItemShareChart();
+      }
+    }
+    document.getElementById("gConceptFilters").addEventListener("change", refreshDashboard);
+    document.querySelectorAll('input[name="gValMode"]').forEach(r => r.addEventListener("change", refreshDashboard));
+    ["shareScope", "shareYear", "shareMonth"].forEach(id => {
+      document.getElementById(id).addEventListener("change", () => {
+        if (id === "shareScope") updateShareScopeUI();
+        renderItemShareChart();
+      });
+    });
+
+    initTheme();
+    loadData();
+    render();
+    showView("planilla");
+
+    if ("serviceWorker" in navigator) {
+      // Si entra un service worker nuevo, recargar una sola vez para mostrar la versión actual
+      let swReloaded = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (swReloaded) return;
+        swReloaded = true;
+        location.reload();
+      });
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js", { updateViaCache: "none" })
+          .then(reg => reg.update())
+          .catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
