@@ -1426,7 +1426,8 @@
       currentYear = sel.value;
 
       let shown = 0;
-      data.forEach((row, idx) => {
+      // Mostrar del mes más nuevo al más viejo (data queda en orden cronológico)
+      data.map((row, idx) => [row, idx]).reverse().forEach(([row, idx]) => {
         const parts = row.mes.toLowerCase().split(" ");
         const monthName = parts[0];
         const year = parts[parts.length - 1];
