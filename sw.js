@@ -2,7 +2,7 @@
 // - HTML: primero la red (siempre trae la versión nueva si hay conexión), caché si no hay internet.
 // - Resto (íconos, librerías, fuentes): primero caché, y se actualiza en segundo plano.
 // Para forzar una limpieza total en el futuro, alcanza con cambiar CACHE_VERSION.
-const CACHE_VERSION = "haberes-v5";
+const CACHE_VERSION = "haberes-v6";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
